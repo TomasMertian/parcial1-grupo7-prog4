@@ -1,0 +1,22 @@
+[
+  { "id": "exp-poc-bra", "nombre": "Expreso Pocillo Brasil", "precioBase": 2500, "tipo": "expreso", "variedad": "Brasil", "tamano": "Pocillo" },
+  { "id": "exp-poc-col", "nombre": "Expreso Pocillo Colombia", "precioBase": 2500, "tipo": "expreso", "variedad": "Colombia", "tamano": "Pocillo" },
+  { "id": "exp-poc-eti", "nombre": "Expreso Pocillo Etiopía", "precioBase": 2500, "tipo": "expreso", "variedad": "Etiopia", "tamano": "Pocillo" },
+  { "id": "exp-med-bra", "nombre": "Expreso Mediano Brasil", "precioBase": 2500, "tipo": "expreso", "variedad": "Brasil", "tamano": "Mediano" },
+  { "id": "exp-med-col", "nombre": "Expreso Mediano Colombia", "precioBase": 2500, "tipo": "expreso", "variedad": "Colombia", "tamano": "Mediano" },
+  { "id": "exp-med-eti", "nombre": "Expreso Mediano Etiopía", "precioBase": 2500, "tipo": "expreso", "variedad": "Etiopia", "tamano": "Mediano" },
+  { "id": "exp-taz-bra", "nombre": "Expreso Taza grande Brasil", "precioBase": 2500, "tipo": "expreso", "variedad": "Brasil", "tamano": "Taza grande" },
+  { "id": "exp-taz-col", "nombre": "Expreso Taza grande Colombia", "precioBase": 2500, "tipo": "expreso", "variedad": "Colombia", "tamano": "Taza grande" },
+  { "id": "exp-taz-eti", "nombre": "Expreso Taza grande Etiopía", "precioBase": 2500, "tipo": "expreso", "variedad": "Etiopia", "tamano": "Taza grande" },
+  { "id": "fil-poc-bra", "nombre": "Filtrado Pocillo Brasil", "precioBase": 3200, "tipo": "filtrado", "variedad": "Brasil", "tamano": "Pocillo" },
+  { "id": "fil-poc-col", "nombre": "Filtrado Pocillo Colombia", "precioBase": 3200, "tipo": "filtrado", "variedad": "Colombia", "tamano": "Pocillo" },
+  { "id": "fil-poc-eti", "nombre": "Filtrado Pocillo Etiopía", "precioBase": 3200, "tipo": "filtrado", "variedad": "Etiopia", "tamano": "Pocillo" },
+  { "id": "fil-med-bra", "nombre": "Filtrado Mediano Brasil", "precioBase": 3200, "tipo": "filtrado", "variedad": "Brasil", "tamano": "Mediano" },
+  { "id": "fil-med-col", "nombre": "Filtrado Mediano Colombia", "precioBase": 3200, "tipo": "filtrado", "variedad": "Colombia", "tamano": "Mediano" },
+  { "id": "fil-med-eti", "nombre": "Filtrado Mediano Etiopía", "precioBase": 3200, "tipo": "filtrado", "variedad": "Etiopia", "tamano": "Mediano" },
+  { "id": "fil-taz-bra", "nombre": "Filtrado Taza grande Brasil", "precioBase": 3200, "tipo": "filtrado", "variedad": "Brasil", "tamano": "Taza grande" },
+  { "id": "fil-taz-col", "nombre": "Filtrado Taza grande Colombia", "precioBase": 3200, "tipo": "filtrado", "variedad": "Colombia", "tamano": "Taza grande" },
+  { "id": "fil-taz-eti", "nombre": "Filtrado Taza grande Etiopía", "precioBase": 3200, "tipo": "filtrado", "variedad": "Etiopia", "tamano": "Taza grande" },
+  { "id": "pas-muffin", "nombre": "Muffin de chocolate", "precioBase": 2500, "tipo": "pasteleria" },
+  { "id": "pas-selva", "nombre": "Porción de torta selva negra", "precioBase": 4200, "tipo": "pasteleria" }
+]
