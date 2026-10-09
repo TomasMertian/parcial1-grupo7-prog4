@@ -33,7 +33,7 @@ export function makeApp(deps: AppDeps = crearDeps()) {
   app.use('/pedidos', makePedidosRouter(deps.pedidos, deps.productos));
   // Est 3: las consultas de pedidos (GET / y GET /:id) se montarán acá sobre la
   // misma ruta '/pedidos' desde pedidosConsulta.routes.ts (el POST es del router de arriba, Est 4).
-  app.use('/reportes', makeReportesRouter(deps.pedidos));
+  app.use('/reportes', makeReportesRouter(deps.pedidos, deps.productos));
 
   app.use((_req: Request, res: Response) => res.status(404).json({ error: 'NotFound' }));
   app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
