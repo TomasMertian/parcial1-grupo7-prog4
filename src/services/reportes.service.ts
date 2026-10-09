@@ -1,14 +1,30 @@
-//Cuentas de reportes: total facturado, unidades vendidas y más vendido.
-
 
 import type { PedidoRepository } from '../repositories/PedidoRepository';
 import type { ProductoRepository } from '../repositories/ProductoRepository';
+import { CafeExpreso } from '../models/CafeExpreso';
+import type { ProductoRecord } from '../models/tipos';
 
 export class ReportesService {
   constructor(
     private readonly pedidoRepository: PedidoRepository,
     private readonly productoRepository: ProductoRepository,
   ) {}
+
+  private calcularPrecio(producto: ProductoRecord): number {
+    if (
+      producto.tipo === 'expreso' &&
+      producto.variedad &&
+      producto.tamano
+    ) {
+      return new CafeExpreso(
+        producto.id,
+        producto.variedad,
+        producto.tamano,
+      ).calcularPrecio();
+    }
+
+    return producto.precioBase;
+  }
 
   obtenerFacturacionTotal(): number {
     const pedidos = this.pedidoRepository.findAll();
@@ -22,7 +38,7 @@ export class ReportesService {
 
         if (!producto) return suma;
 
-        return suma + producto.precioBase * item.cantidad;
+        return suma + this.calcularPrecio(producto) * item.cantidad;
       }, 0);
 
       return total + subtotal;
