@@ -2,9 +2,9 @@ import { Router } from 'express';
 import type { ProductoRepository } from '../repositories/ProductoRepository';
 import type { PedidoRepository } from '../repositories/PedidoRepository';
 
-// Router de pedidos. Al igual que los demás, ya está montado en app.ts y se
-// deja sin endpoints de forma intencional para completarlo entre Est 4 y Est 5.
-// Al ser un archivo compartido por ambos, conviene coordinarse antes de editarlo.
+// Router de pedidos. Ya está montado en app.ts; Est 4 agrega acá el POST /.
+// Las consultas (GET / y GET /:id) viven en pedidosConsulta.routes.ts (Est 3),
+// que se monta en app.ts sobre la misma ruta '/pedidos'.
 export function makePedidosRouter(
   _pedidos: PedidoRepository,
   _productos: ProductoRepository,
@@ -12,8 +12,7 @@ export function makePedidosRouter(
   const router = Router();
 
   // TODO(Est 4): POST /    -> crea el pedido y devuelve 201 con el total calculado
-  // TODO(Est 5): GET /     -> lista los pedidos de todas las mesas
-  // TODO(Est 5): GET /:id  -> pedido por id (200, o 404 si no existe)
+  // (GET / y GET /:id: ver pedidosConsulta.routes.ts — Est 3)
 
   return router;
 }
