@@ -1,4 +1,4 @@
-# Cafetería Origen — Parcial 1 
+# Cafetería Origen — Parcial 1 (Prog4)
 
 ## Tecnologías
 
@@ -29,41 +29,44 @@ pnpm test:integration   # solo tests de integración (tests/integration)
 ```text
 parcial1-grupo7-prog4/
 ├── src/
-│   ├── app.ts                        base
-│   ├── server.ts                     base
+│   ├── app.ts                             base
+│   ├── server.ts                          base
 │   ├── config/
-│   │   └── paths.ts                  base
+│   │   └── paths.ts                       base
 │   ├── models/
-│   │   ├── tipos.ts                  base
-│   │   ├── Producto.ts               base
-│   │   ├── Pasteleria.ts             Est 1
-│   │   ├── fabrica.ts                Est 1
-│   │   ├── CafeExpreso.ts            Est 2
-│   │   ├── CafeFiltrado.ts           Est 3
-│   │   └── Pedido.ts                 Est 4
+│   │   ├── tipos.ts                       base
+│   │   ├── Producto.ts                    base
+│   │   ├── Pasteleria.ts                  Est 1
+│   │   ├── fabrica.ts                     Est 1
+│   │   ├── CafeExpreso.ts                 Est 2
+│   │   ├── CafeFiltrado.ts                Est 3
+│   │   └── Pedido.ts                      Est 4
 │   ├── repositories/
-│   │   ├── ProductoRepository.ts     base
-│   │   └── PedidoRepository.ts       base
+│   │   ├── ProductoRepository.ts          base
+│   │   └── PedidoRepository.ts            base
 │   ├── services/
-│   │   ├── productos.service.ts      Est 1
-│   │   ├── pedidos.service.ts        Est 4 + 5
-│   │   └── reportes.service.ts       Est 5
+│   │   ├── productos.service.ts           Est 1
+│   │   ├── pedidos.service.ts             Est 4   ← (calcularTotal + crear)
+│   │   ├── pedidosConsulta.service.ts     Est 3   ← (listar + obtener)
+│   │   └── reportes.service.ts            Est 2   
 │   ├── controllers/
-│   │   ├── productos.controller.ts   Est 1
-│   │   ├── pedidos.controller.ts     Est 4 + 5
-│   │   └── reportes.controller.ts    Est 5
+│   │   ├── productos.controller.ts        Est 1
+│   │   ├── pedidos.controller.ts          Est 4   (POST)          
+│   │   ├── pedidosConsulta.controller.ts  Est 3   (GET)       
+│   │   └── reportes.controller.ts         Est 5
 │   ├── routes/
-│   │   ├── productos.routes.ts       Est 1
-│   │   ├── pedidos.routes.ts         Est 4 + 5
-│   │   └── reportes.routes.ts        Est 5
+│   │   ├── productos.routes.ts            Est 1
+│   │   ├── pedidos.routes.ts              Est 4   (POST)
+│   │   ├── pedidosConsulta.routes.ts      Est 3   (GET)   
+│   │   └── reportes.routes.ts             Est 5
 │   └── data/
-│       ├── productos.json            base
-│       └── pedidos.json              base
+│       ├── productos.json                 base
+│       └── pedidos.json                   base
 ├── tests/
 │   ├── unit/
 │   └── integration/
-├── vitest.config.ts                  base
-├── tsconfig.json                     base
-├── package.json                      base
-└── .gitignore                        base
+├── vitest.config.ts                       base
+├── tsconfig.json                          base
+├── package.json                           base
+└── .gitignore
 ```
