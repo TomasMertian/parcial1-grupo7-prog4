@@ -1,5 +1,5 @@
-import type { Producto } from './Producto.js';
-import type { Variedad, Tamano } from './tipos.js';
+import type { Producto } from './Producto';
+import type { Variedad, Tamano } from './tipos';
 
 export class CafeFiltrado implements Producto {
     id: string;
