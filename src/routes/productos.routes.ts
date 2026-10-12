@@ -8,6 +8,9 @@ export function makeProductosRouter(_repo: ProductoRepository): Router {
   const router = Router();
 
   // TODO(Est 1): GET /     -> lista de todos los productos (200)
+  router.get('/', (_req,res) => {
+    res.status(200).json(_repo.findAll())
+  }); 
   // TODO(Est 1): GET /:id  -> producto por id (200, o 404 si no existe)
 
   return router;
