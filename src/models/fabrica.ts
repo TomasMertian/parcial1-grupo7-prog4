@@ -5,11 +5,11 @@ import { Producto } from "./Producto";
 
 export class Fabrica {
     //recibe el producto tal como viene del json
-    public static crear(data:any):Producto{
+    public static crear(data:any):Producto | null{
         switch (data.tipo){
             case 'expreso':
                 //si el tipo es expreso le pasa los datos que le pida el constructor
-                return new CafeExpreso(data.id, data.variedad, data.tamano);
+                return  null//new CafeExpreso(data.id, data.variedad, data.tamano);
             case 'filtrado':
                 return  new CafeFiltrado(data.id, data.variedad, data.tamano);
             case 'pasteleria':
