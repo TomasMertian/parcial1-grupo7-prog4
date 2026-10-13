@@ -11,7 +11,7 @@ export class Fabrica {
                 return new CafeExpreso(data.id, data.variedad, data.tamano);
             case 'filtrado':
                 return new CafeFiltrado(data.id, data.variedad, data.tamano);
-            case 'Pasteleria':
+            case 'pasteleria':
                 return new Pasteleria(data.id, data.nombre, data.precioBase,data.tipo);
             default:
                 throw new Error(`tipo no encontrado ${data.tipo}`)
