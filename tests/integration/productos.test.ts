@@ -2,7 +2,7 @@
 import {it, describe, expect} from 'vitest';
 import  Request from 'supertest';
 import {crearDeps, makeApp} from '../../src/app';
-import { array } from 'zod';
+
 
 const app = makeApp(crearDeps())
 describe("integracion: endpoints de productos",() => {
@@ -10,7 +10,7 @@ describe("integracion: endpoints de productos",() => {
         const response= await Request(app).get('/productos');
 
         expect(response.status).toBe(200);
-        expect(array(response.body)).toBe(true)
+        expect(Array.isArray(response.body)).toBe(true)
         expect(response.body).toBeDefined()
     })
 })
