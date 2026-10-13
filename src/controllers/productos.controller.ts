@@ -5,7 +5,7 @@ export class productoController {
 
     constructor(){
         //instanciamos el servicio para usarlo
-        this.service = new productoService;
+        this.service = new productoService();
     }
     
     //endpoint GET /productos

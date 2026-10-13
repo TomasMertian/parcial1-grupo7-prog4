@@ -8,7 +8,7 @@ export function makeProductosRouter(_repo: ProductoRepository): Router {
   const router = Router();
 
 
-  const controller = new productoController
+  const controller = new productoController()
   // TODO(Est 1): GET /     -> lista de todos los productos (200)
   router.get('/', (controller.obtenerTodos))
   
