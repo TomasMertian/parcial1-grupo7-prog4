@@ -5,7 +5,7 @@ import { Producto } from "./Producto";
 
 export class Fabrica {
     //recibe el producto tal como viene del json
-    public static crear(data:any):Producto | string  {
+    public static crear(data:any):Producto{
         switch (data.tipo){
             case 'expreso':
                 //si el tipo es expreso le pasa los datos que le pida el constructor
@@ -13,7 +13,7 @@ export class Fabrica {
             case 'filtrado':
                 return  new CafeFiltrado(data.id, data.variedad, data.tamano);
             case 'pasteleria':
-                return  "noProducto"//new Pasteleria(data.id, data.nombre, data.precioBase,data.tipo);
+                return  new Pasteleria(data.id, data.nombre, data.precioBase,data.tipo);
             default:
                 throw new Error(`tipo no encontrado ${data.tipo}`)
 
