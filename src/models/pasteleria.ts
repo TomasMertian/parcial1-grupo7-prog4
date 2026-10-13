@@ -18,7 +18,7 @@ export class Pasteleria implements Producto{
         return this.tipo
     }
     calcularPrecio(): number {
-        return this.precioBase
+        return 0
     }
     getString() {
         return `Nombre: ${this.nombre}, Precio: ${this.precioBase}, Tipo: ${this.tipo}`
