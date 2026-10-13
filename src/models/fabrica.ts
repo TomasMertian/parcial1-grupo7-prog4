@@ -9,7 +9,7 @@ export class Fabrica {
         switch (data.tipo){
             case 'expreso':
                 //si el tipo es expreso le pasa los datos que le pida el constructor
-                return  null//new CafeExpreso(data.id, data.variedad, data.tamano);
+                return  new CafeExpreso(data.id, data.variedad, data.tamano);
             case 'filtrado':
                 return  new CafeFiltrado(data.id, data.variedad, data.tamano);
             case 'pasteleria':
