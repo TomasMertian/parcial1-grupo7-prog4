@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { existsSync, unlinkSync } from 'fs';
-import { PedidosConsultaService } from '../../src/services/pedidosConsulta.service';
+import { PedidosConsultaService } from '../../src/services/pedidosConsulta.service.js';
 import { PedidosService } from '../../src/services/pedidos.service.js';
-import { JsonPedidoRepository } from '../../src/repositories/PedidoRepository';
+import { JsonPedidoRepository } from '../../src/repositories/PedidoRepository.js';
 
 // archivo JSON temporal 
 const testFilePath = './tests/unit/test-pedidos-consulta.json';
