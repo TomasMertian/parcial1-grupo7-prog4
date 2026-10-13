@@ -19,4 +19,11 @@ describe("test unitario fabrica",() => {
 
         expect(producto).toBeInstanceOf(CafeExpreso);
     });
+    it("debe crear una instancia de cafeFiltrado", () => {
+        const datosCrudos = {"id": "fil-poc-col", "nombre": "Filtrado Pocillo Colombia", "precioBase": 3200, "tipo": "filtrado", "variedad": "Colombia", "tamano": "Pocillo"};
+        
+        const producto = Fabrica.crear(datosCrudos)
+
+        expect(producto).toBeInstanceOf(CafeFiltrado);
+    });
 })
