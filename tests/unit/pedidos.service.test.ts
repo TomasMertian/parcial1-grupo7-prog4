@@ -32,7 +32,7 @@ function crearServicio() {
     findById: vi.fn((id) => productos.find((producto) => producto.id === id)),
   };
 
-  return { servicio: new PedidosService(pedidoRepo, productoRepo), pedidoRepo };
+  return { servicio: new PedidosService(pedidoRepo, productoRepo), pedidoRepo, productoRepo };
 }
 
 describe('PedidosService', () => {
@@ -45,6 +45,19 @@ describe('PedidosService', () => {
         { productoId: 'pas-muffin', cantidad: 3 },
       ]),
     ).toBe(2 * 5020 + 3 * 2500);
+  });
+
+  it('calcula el total cuando todos los productos existen', () => {
+    const { servicio, productoRepo } = crearServicio();
+
+    const total = servicio.calcularTotal([
+      { productoId: 'exp-poc-bra', cantidad: 1 },
+      { productoId: 'pas-muffin', cantidad: 1 },
+    ]);
+
+    expect(total).toBe(5020 + 2500);
+    expect(productoRepo.findById).toHaveBeenCalledWith('exp-poc-bra');
+    expect(productoRepo.findById).toHaveBeenCalledWith('pas-muffin');
   });
 
   it('crea un pedido pendiente con el total calculado', () => {
