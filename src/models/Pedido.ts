@@ -1,5 +1,9 @@
-import type { PedidoRecord } from './tipos';
+import type { EstadoPedido, ItemPedido } from './tipos';
 
-export interface Pedido extends PedidoRecord {
+export interface Pedido {
+  id: string;
+  mesa: number;
+  items: ItemPedido[];
+  estado: EstadoPedido;
   total: number;
 }
