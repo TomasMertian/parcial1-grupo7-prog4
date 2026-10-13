@@ -9,7 +9,5 @@ describe("test unitario fabrica",() => {
         const producto = Fabrica.crear(datosCrudos)!
 
         expect(producto).toBeInstanceOf(Pasteleria);
-        
-        
     })  
 })
