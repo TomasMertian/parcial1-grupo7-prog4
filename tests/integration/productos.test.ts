@@ -12,7 +12,7 @@ describe("integracion: endpoints de productos",() => {
         expect(response.status).toBe(200);
         expect(Array.isArray(response.body)).toBe(true)
         expect(response.body).toBeDefined()
-    })
+    });
 })
 describe("integracion: endpoints de productos",() => {
     it("GET /productos/:ID debe devolver 200 y el producto ",async () => {
@@ -20,5 +20,11 @@ describe("integracion: endpoints de productos",() => {
 
         expect(response.status).toBe(200);
         expect(response.body).toBeDefined()
-    })
+    });
+    it("GET /productos/:ID debe devolver 404 y un mensaje",async () => {
+        const response= await Request(app).get('/productos/pas-maffin');
+
+        expect(response.status).toBe(404);
+        expect(response.body).toBeDefined()
+    });
 })
