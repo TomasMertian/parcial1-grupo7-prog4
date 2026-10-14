@@ -36,7 +36,7 @@ export class productoController {
                 res.status(200).json(producto)
             }else{
                 //sino un error 404
-                res.status(400).json("producto no encontrado")
+                res.status(404).json("producto no encontrado")
             }
         }catch (error){
             res.status(500)
