@@ -1,18 +1,18 @@
 import { Router } from 'express';
 import type { ProductoRepository } from '../repositories/ProductoRepository';
 import type { PedidoRepository } from '../repositories/PedidoRepository';
+import { PedidosService } from '../services/pedidos.service';
+import { PedidosController } from '../controllers/pedidos.controller';
 
-// Router de pedidos. Ya está montado en app.ts; Est 4 agrega acá el POST /.
-// Las consultas (GET / y GET /:id) viven en pedidosConsulta.routes.ts (Est 3),
-// que se monta en app.ts sobre la misma ruta '/pedidos'.
 export function makePedidosRouter(
-  _pedidos: PedidoRepository,
-  _productos: ProductoRepository,
+  pedidos: PedidoRepository,
+  productos: ProductoRepository,
 ): Router {
   const router = Router();
+  const service = new PedidosService(pedidos, productos);
+  const controller = new PedidosController(service);
 
-  // TODO(Est 4): POST /    -> crea el pedido y devuelve 201 con el total calculado
-  // (GET / y GET /:id: ver pedidosConsulta.routes.ts — Est 3)
+  router.post('/', controller.crear);
 
   return router;
 }
