@@ -5,6 +5,7 @@ import { PRODUCTOS_FILE, PEDIDOS_FILE } from './config/paths';
 import { makeProductosRouter } from './routes/productos.routes';
 import { makePedidosRouter } from './routes/pedidos.routes';
 import { makeReportesRouter } from './routes/reportes.routes';
+import { makePedidosConsultaRouter } from './routes/pedidosConsulta.routes';
 
 // Dependencias de la app (inyección de dependencias).
 // En tests se puede pasar un AppDeps con repos apuntando a un JSON de prueba.
@@ -31,7 +32,7 @@ export function makeApp(deps: AppDeps = crearDeps()) {
 
   app.use('/productos', makeProductosRouter(deps.productos));
   app.use('/pedidos', makePedidosRouter(deps.pedidos, deps.productos));
-  // Est 3: las consultas de pedidos (GET / y GET /:id) se definen aca
+  app.use('/pedidos', makePedidosConsultaRouter(deps.pedidos));
   // misma ruta '/pedidos' desde pedidosConsulta.routes.ts (La de arriba es del POST).
   app.use('/reportes', makeReportesRouter(deps.pedidos, deps.productos));
 
