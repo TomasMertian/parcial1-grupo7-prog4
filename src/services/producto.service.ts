@@ -1,13 +1,11 @@
 import { Fabrica } from "../models/fabrica";
-import { JsonProductoRepository } from "../repositories/ProductoRepository";
+import type { ProductoRepository } from "../repositories/ProductoRepository";
 import { Producto } from "../models/Producto";
 
 export class productoService {
-    private repository: JsonProductoRepository;
 
-    constructor(){
+    constructor(private readonly repository: ProductoRepository){
         //inicializamos el repo indicando la ruta del archivo json que actua como bdd
-        this.repository = new JsonProductoRepository('./src/data/productos.json')
     }
 
     public obtenerTodos(): Producto[]{

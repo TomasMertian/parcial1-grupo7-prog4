@@ -1,11 +1,8 @@
 import { Request,Response } from "express";
 import { productoService } from "../services/producto.service";
 export class productoController {
-    private service: productoService;
-
-    constructor(){
+    constructor(private readonly service: productoService){
         //instanciamos el servicio para usarlo
-        this.service = new productoService();
     }
     
     //endpoint GET /productos
@@ -17,7 +14,7 @@ export class productoController {
             //devolvemos un ok con la lista
             res.status(200).json(productos)
         }catch (error){
-            res.status(500)
+            res.status(500).json({error: 'error interno del servidor'})
         };
     }
 
@@ -36,10 +33,10 @@ export class productoController {
                 res.status(200).json(producto)
             }else{
                 //sino un error 404
-                res.status(404).json("producto no encontrado")
+                res.status(404).json({error: 'producto no encontrado'})
             }
         }catch (error){
-            res.status(500)
+            res.status(500).json({error: 'error interno del servidor'})
         }
     }
         
