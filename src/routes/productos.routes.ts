@@ -1,14 +1,15 @@
 import { Router } from 'express';
 import type { ProductoRepository } from '../repositories/ProductoRepository';
 import { productoController } from '../controllers/productos.controller';
+import { productoService } from '../services/producto.service';
 // Router de productos. Ya está montado en app.ts y se deja sin endpoints de
 // forma intencional: cada integrante agrega acá las rutas que le corresponden,
 // sin necesidad de modificar app.ts.
-export function makeProductosRouter(_repo: ProductoRepository): Router {
+export function makeProductosRouter(repo: ProductoRepository): Router {
   const router = Router();
 
-
-  const controller = new productoController()
+  const service = new productoService(repo)
+  const controller = new productoController(service)
   // TODO(Est 1): GET /     -> lista de todos los productos (200)
   router.get('/', (controller.obtenerTodos))
   
