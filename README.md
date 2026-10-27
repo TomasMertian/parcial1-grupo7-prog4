@@ -70,3 +70,77 @@ parcial1-grupo7-prog4/
 ├── package.json                           base
 └── .gitignore
 ```
+
+## Aportes al proyecto
+# Integrante: Federica Vignales Rocca
+
+Me encargué de la adaptación de la API para cumplir con los requerimientos del trabajo práctico 3, incluyendo los ajustes necesarios en los endpoints, el manejo de respuestas y errores, y la incorporación de los endpoints de prueba para facilitar la ejecución de las pruebas de integración.
+
+## Endpoints de la API
+
+### Productos
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| GET | `/productos` | Lista los productos con su `precio` calculado y su `tipo`. |
+| GET | `/productos/:id` | Obtiene un producto por ID, incluyendo `precio` y `tipo`. |
+
+Si el producto no existe, la API responde con estado `404` y un JSON con el campo `error`.
+
+### Pedidos
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| POST | `/pedidos` | Crea un pedido a partir de los productos y cantidades recibidos. Acepta `mesaId` opcional. |
+| GET | `/pedidos` | Consulta los pedidos registrados. |
+| GET | `/pedidos/:id` | Obtiene un pedido por ID, incluyendo `id`, `mesaId` si corresponde, `estado`, `items` y `total`. |
+
+#### Crear un pedido
+
+Ejemplo del cuerpo de la solicitud:
+
+    {
+      "mesaId": 1,
+      "items": [
+        {
+          "productoId": "exp-poc-bra",
+          "cantidad": 2
+        }
+      ]
+    }
+
+El campo `mesaId` es opcional. Si se omite, el pedido se crea sin mesa asignada.
+
+El `total` no se envía en la solicitud: lo calcula la API según los precios de los productos y sus cantidades. El pedido se crea con estado inicial `pendiente`.
+
+#### Consultar un pedido
+
+La respuesta de `GET /pedidos/:id` incluye el estado, los productos y sus cantidades, y el total calculado y guardado al crear el pedido.
+
+### Reportes
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| GET | `/reportes` | Consulta los reportes disponibles. |
+
+### Endpoints de prueba
+
+Estos endpoints están habilitados únicamente cuando la variable de entorno `NODE_ENV` tiene el valor `test`.
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| POST | `/__test__/reset` | Elimina los pedidos existentes en el repositorio de prueba. |
+| POST | `/__test__/seed` | Carga los pedidos de prueba definidos para iniciar con datos conocidos. |
+
+Se utilizan para que las pruebas de integración y E2E comiencen con un estado conocido y consistente.
+
+### Formato de errores
+
+Los errores de la API se responden en formato JSON, con el campo `error`.
+
+Ejemplo:
+
+    {
+      "error": "Producto no encontrado"
+    }
+

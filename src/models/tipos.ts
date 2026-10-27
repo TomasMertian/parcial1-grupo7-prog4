@@ -21,7 +21,8 @@ export interface ProductoRecord {
 // Registro tal como se guarda en pedidos.json
 export interface PedidoRecord {
   id: string;
-  mesa: number;
+  mesaId?: number;
   items: ItemPedido[];
   estado: EstadoPedido;
+  total: number;
 }

@@ -16,17 +16,39 @@ describe('Integración: endpoints de productos', () => {
         expect(Array.isArray(response.body)).toBe(true);
     });
 
+    it('GET /productos debe devolver precio y tipo para cada producto', async () => {
+    const response = await request(app).get('/productos');
+
+    expect(response.status).toBe(200);
+
+    for (const producto of response.body) {
+        expect(producto).toHaveProperty('precio');
+        expect(producto).toHaveProperty('tipo');
+    }
+    });
+
     it('GET /productos/:id debe devolver 200 y el producto', async () => {
         const response = await request(app).get('/productos/pas-muffin');
 
         expect(response.status).toBe(200);
         expect(response.body).toBeDefined();
     });
-    it('GET /productos/:id debe devolver 404 y el mensaje', async () => {
-        const response = await request(app).get('/productos/pas-maffin');
 
-        expect(response.status).toBe(404);
-        expect(response.body).toBeDefined();
+    it('GET /productos/:id debe devolver precio y tipo', async () => {
+    const response = await request(app).get('/productos/pas-muffin');
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('precio');
+    expect(response.body).toHaveProperty('tipo');
+    });
+
+    it('GET /productos/:id debe devolver 404 y un error con formato JSON', async () => {
+    const response = await request(app).get('/productos/pas-maffin');
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({
+        error: 'Producto no encontrado',
+    });
     });
 
     it.each([
