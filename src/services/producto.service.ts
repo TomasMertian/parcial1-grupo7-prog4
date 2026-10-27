@@ -10,14 +10,20 @@ export class productoService {
         this.repository = new JsonProductoRepository('./src/data/productos.json')
     }
 
-    public obtenerTodos(): Producto[]{
-        //se obtienen los registros crudos 
+    //metodo que obtiene todos los productos y les calcula el precio
+    public obtenerTodos() {
+    const data = this.repository.findAll();
 
-        const data = this.repository.findAll() 
-        //transforma cada registro crudo en una instancia de clase real(pasteleria, expreso etc)
-        const dataLista = data.map(item => Fabrica.crear(item))
-        return dataLista
-    }
+    return data.map((item) => {
+        const producto = Fabrica.crear(item);
+
+        return {
+            ...producto,
+            precio: producto.calcularPrecio(),
+            tipo: item.tipo,
+        };
+    });
+}
 
     public obtenerPorId(id:string): Producto | undefined{
         //busca el registro crudo por id
