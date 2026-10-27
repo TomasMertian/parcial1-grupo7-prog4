@@ -34,6 +34,19 @@ describe('POST /pedidos', () => {
     expect(respuesta.body.estado).toBe('pendiente');
   });
 
+  it('crea un pedido para una mesa cuando se proporciona mesaId', async () => {
+    const respuesta = await request(app)
+      .post('/pedidos')
+      .send({
+        mesaId: 1,
+        items: [{ productoId: 'exp-poc-bra', cantidad: 2 }],
+      });
+
+    expect(respuesta.status).toBe(201);
+    expect(respuesta.body.mesaId).toBe(1);
+});
+
+
   it('responde 400 si los datos son invalidos', async () => {
     const respuesta = await request(app)
       .post('/pedidos')
