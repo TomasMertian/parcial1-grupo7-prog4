@@ -8,5 +8,19 @@ export function makeTestRouter(pedidos: PedidoRepository) {
         pedidos.clear();
         res.status(200).json({ ok: true });
     });
+
+    router.post('/seed', (_req, res) => {
+    pedidos.clear();
+
+    pedidos.create({
+        id: 'pedido-seed-1',
+        mesaId: 4,
+        items: [{ productoId: 'exp-poc-bra', cantidad: 2 }],
+        estado: 'pendiente',
+        total: 10040,
+    });
+
+    res.status(200).json({ ok: true });
+});
     return router;
 }
