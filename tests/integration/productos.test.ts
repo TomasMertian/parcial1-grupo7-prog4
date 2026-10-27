@@ -26,13 +26,22 @@ describe('Integración: endpoints de productos', () => {
         expect(producto).toHaveProperty('tipo');
     }
     });
-    
+
     it('GET /productos/:id debe devolver 200 y el producto', async () => {
         const response = await request(app).get('/productos/pas-muffin');
 
         expect(response.status).toBe(200);
         expect(response.body).toBeDefined();
     });
+
+    it('GET /productos/:id debe devolver precio y tipo', async () => {
+    const response = await request(app).get('/productos/pas-muffin');
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('precio');
+    expect(response.body).toHaveProperty('tipo');
+    });
+    
     it('GET /productos/:id debe devolver 404 y el mensaje', async () => {
         const response = await request(app).get('/productos/pas-maffin');
 
