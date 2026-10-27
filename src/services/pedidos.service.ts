@@ -6,7 +6,7 @@ import type { PedidoRepository } from '../repositories/PedidoRepository';
 import type { ProductoRepository } from '../repositories/ProductoRepository';
 
 export interface NuevoPedido {
-  mesa: number;
+  mesaId?: number;
   items: ItemPedido[];
 }
 
@@ -40,7 +40,7 @@ export class PedidosService {
   crear(datos: NuevoPedido): Pedido {
     const pedido: Pedido = {
       id: randomUUID(),
-      mesa: datos.mesa,
+      mesaId: datos.mesaId,
       items: datos.items,
       estado: 'pendiente',
       total: this.calcularTotal(datos.items),
@@ -48,7 +48,7 @@ export class PedidosService {
 
     this.pedidos.create({
       id: pedido.id,
-      mesa: pedido.mesa,
+      mesaId: pedido.mesaId,
       items: pedido.items,
       estado: pedido.estado,
     });

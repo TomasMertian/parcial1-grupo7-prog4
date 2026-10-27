@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { PedidosService, ProductoNoExisteError } from '../services/pedidos.service';
 
 const pedidoSchema = z.object({
-  mesa: z.number().int(),
+  mesaId: z.number().int().positive().optional(),
   items: z
     .array(
       z.object({
