@@ -94,3 +94,42 @@ describe('POST /pedidos', () => {
     expect(respuesta.status).toBe(400);
   });
 });
+
+
+describe('POST /__test__/reset', () => {
+  let dir: string;
+  let app: ReturnType<typeof makeApp>;
+
+  beforeEach(() => {
+    dir = mkdtempSync(join(tmpdir(), 'reset-'));
+
+    app = makeApp({
+      productos: new JsonProductoRepository(PRODUCTOS_FILE),
+      pedidos: new JsonPedidoRepository(join(dir, 'pedidos.json')),
+    });
+  });
+
+  afterEach(() => {
+    rmSync(dir, { recursive: true, force: true });
+  });
+
+  it('deberia limpiar los pedidos de prueba', async () => {
+    const creacion = await request(app)
+      .post('/pedidos')
+      .send({
+        mesaId: 1,
+        items: [{ productoId: 'exp-poc-bra', cantidad: 1 }],
+      });
+
+    expect(creacion.status).toBe(201);
+
+    const reset = await request(app).post('/__test__/reset');
+
+    expect(reset.status).toBe(200);
+
+    const consulta = await request(app).get('/pedidos');
+
+    expect(consulta.status).toBe(200);
+    expect(consulta.body).toEqual([]);
+  });
+});
