@@ -5,6 +5,10 @@ import {
     obtenerPedidos,
     obtenerPedidoPorId,
 } from '../src/services/pedidos.js'
+import {
+    obtenerFacturacion,
+    obtenerMasVendido,
+} from '../src/services/reportes.js'
 
 afterEach(() => {
     vi.unstubAllGlobals()
@@ -89,5 +93,45 @@ describe('Servicio de pedidos', () => {
         
         await expect(obtenerPedidoPorId('inexistente'))
         .rejects.toThrow('Pedido no encontrado')
+    })
+})
+
+describe('Servicio de reportes', () => {
+    it('obtiene la facturación total', async () => {
+        const reporte = { facturacionTotal: 15060 }
+
+        vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
+            new Response(JSON.stringify(reporte), { status: 200 }),
+        ))
+
+        await expect(obtenerFacturacion()).resolves.toEqual(reporte)
+        expect(fetch).toHaveBeenCalledWith('/reportes/facturacion')
+    })
+
+    it('obtiene el producto más vendido', async () => {
+        const reporte = {
+            productoId: 'exp-poc-bra',
+            nombre: 'Expreso Brasil',
+            cantidad: 3,
+        }
+
+        vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
+            new Response(JSON.stringify(reporte), { status: 200 }),
+        ))
+
+        await expect(obtenerMasVendido()).resolves.toEqual(reporte)
+        expect(fetch).toHaveBeenCalledWith('/reportes/mas-vendido')
+    })
+
+    it('informa un error si falla la consulta de reportes', async () => {
+        vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
+            new Response(JSON.stringify({ error: 'Error interno del servidor' }), {
+                status: 500,
+            }),
+        ))
+
+        await expect(obtenerFacturacion()).rejects.toThrow(
+            'Error interno del servidor',
+        )
     })
 })
