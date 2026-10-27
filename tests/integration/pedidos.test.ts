@@ -57,6 +57,27 @@ describe('POST /pedidos', () => {
       expect(respuesta.body).not.toHaveProperty('mesaId');
 });
 
+  it('guarda el total del pedido para poder consultarlo después', async () => {
+    const creacion = await request(app)
+      .post('/pedidos')
+      .send({
+        mesaId: 1,
+        items: [{ productoId: 'exp-poc-bra', cantidad: 2 }],
+      });
+
+      expect(creacion.status).toBe(201);
+
+    const consulta = await request(app)
+      .get(`/pedidos/${creacion.body.id}`);
+
+      expect(consulta.status).toBe(200);
+      expect(consulta.body.estado).toBe('pendiente');
+      expect(consulta.body.items).toEqual([
+        { productoId: 'exp-poc-bra', cantidad: 2 },
+      ]);
+      expect(consulta.body.total).toBe(2 * 5020);
+    });
+
   it('responde 400 si los datos son invalidos', async () => {
     const respuesta = await request(app)
       .post('/pedidos')
