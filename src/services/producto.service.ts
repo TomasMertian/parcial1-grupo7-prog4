@@ -25,15 +25,20 @@ export class productoService {
     });
 }
 
-    public obtenerPorId(id:string): Producto | undefined{
-        //busca el registro crudo por id
-        const data = this.repository.findById(id)
-        //si no existe retorna undefined
-        if (!data) {
-            return undefined
-        }
-        // si salta el filtro lo pasa por fabrica para crear la instancia de clase real
-        const producto = Fabrica.crear(data)
-        return producto
+    //metodo que obtiene un producto por id y le calcula el precio
+    public obtenerPorId(id: string) {
+    const data = this.repository.findById(id);
+
+    if (!data) {
+        return undefined;
     }
+
+    const producto = Fabrica.crear(data);
+
+    return {
+        ...producto,
+        precio: producto.calcularPrecio(),
+        tipo: data.tipo,
+    };
+}
 }
