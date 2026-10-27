@@ -56,6 +56,7 @@ describe('ReportesService', () => {
       findAll: vi.fn(() => pedidos),
       findById: vi.fn(),
       create: vi.fn(),
+      clear: vi.fn(),
     };
 
     const productoRepo: ProductoRepository = {

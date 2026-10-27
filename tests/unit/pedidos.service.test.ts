@@ -25,6 +25,7 @@ function crearServicio() {
     findAll: vi.fn(() => []),
     findById: vi.fn(),
     create: vi.fn((pedido) => pedido),
+    clear: vi.fn(),
   };
 
   const productoRepo: ProductoRepository = {
