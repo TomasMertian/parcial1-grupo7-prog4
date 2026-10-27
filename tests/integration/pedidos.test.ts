@@ -46,6 +46,16 @@ describe('POST /pedidos', () => {
     expect(respuesta.body.mesaId).toBe(1);
 });
 
+  it('crea un pedido para retirar en barra cuando no se proporciona mesaId', async () => {
+    const respuesta = await request(app)
+      .post('/pedidos')
+      .send({
+        items: [{ productoId: 'exp-poc-bra', cantidad: 2 }],
+      });
+      
+      expect(respuesta.status).toBe(201);
+      expect(respuesta.body).not.toHaveProperty('mesaId');
+});
 
   it('responde 400 si los datos son invalidos', async () => {
     const respuesta = await request(app)
