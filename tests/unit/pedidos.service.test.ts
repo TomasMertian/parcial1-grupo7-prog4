@@ -75,6 +75,7 @@ describe('PedidosService', () => {
       mesaId: 3,
       items: [{ productoId: 'exp-poc-bra', cantidad: 1 }],
       estado: 'pendiente',
+      total: 5020,
     });
   });
 
