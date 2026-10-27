@@ -24,4 +24,5 @@ export interface PedidoRecord {
   mesaId?: number;
   items: ItemPedido[];
   estado: EstadoPedido;
+  total: number;
 }

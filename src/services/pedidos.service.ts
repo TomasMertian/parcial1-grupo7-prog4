@@ -51,6 +51,7 @@ export class PedidosService {
       mesaId: pedido.mesaId,
       items: pedido.items,
       estado: pedido.estado,
+      total: pedido.total,
     });
 
     return pedido;
