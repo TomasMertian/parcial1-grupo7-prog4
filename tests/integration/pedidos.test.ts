@@ -133,3 +133,37 @@ describe('POST /__test__/reset', () => {
     expect(consulta.body).toEqual([]);
   });
 });
+
+
+describe('POST /__test__/seed', () => {
+  let dir: string;
+  let app: ReturnType<typeof makeApp>;
+
+  beforeEach(() => {
+    dir = mkdtempSync(join(tmpdir(), 'seed-'));
+
+    app = makeApp({
+      productos: new JsonProductoRepository(PRODUCTOS_FILE),
+      pedidos: new JsonPedidoRepository(join(dir, 'pedidos.json')),
+    });
+  });
+
+  afterEach(() => {
+    rmSync(dir, { recursive: true, force: true });
+  });
+
+  it('carga los pedidos de prueba definidos', async () => {
+    const seed = await request(app).post('/__test__/seed');
+
+    expect(seed.status).toBe(200);
+
+    const consulta = await request(app).get('/pedidos');
+
+    expect(consulta.status).toBe(200);
+    expect(consulta.body.length).toBeGreaterThan(0);
+    expect(consulta.body[0]).toHaveProperty('id');
+    expect(consulta.body[0]).toHaveProperty('items');
+    expect(consulta.body[0]).toHaveProperty('estado');
+    expect(consulta.body[0]).toHaveProperty('total');
+  });
+});
