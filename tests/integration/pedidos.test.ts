@@ -27,7 +27,7 @@ describe('POST /pedidos', () => {
   it('crea el pedido y responde 201 con el total', async () => {
     const respuesta = await request(app)
       .post('/pedidos')
-      .send({ mesa: 1, items: [{ productoId: 'exp-poc-bra', cantidad: 2 }] });
+      .send({ mesaId: 1, items: [{ productoId: 'exp-poc-bra', cantidad: 2 }] });
 
     expect(respuesta.status).toBe(201);
     expect(respuesta.body.total).toBe(2 * 5020);
