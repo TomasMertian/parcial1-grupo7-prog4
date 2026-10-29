@@ -25,6 +25,7 @@ function crearServicio() {
     findAll: vi.fn(() => []),
     findById: vi.fn(),
     create: vi.fn((pedido) => pedido),
+    clear: vi.fn(),
   };
 
   const productoRepo: ProductoRepository = {
@@ -64,7 +65,7 @@ describe('PedidosService', () => {
     const { servicio, pedidoRepo } = crearServicio();
 
     const pedido = servicio.crear({
-      mesa: 3,
+      mesaId: 3,
       items: [{ productoId: 'exp-poc-bra', cantidad: 1 }],
     });
 
@@ -72,9 +73,10 @@ describe('PedidosService', () => {
     expect(pedido.estado).toBe('pendiente');
     expect(pedidoRepo.create).toHaveBeenCalledWith({
       id: pedido.id,
-      mesa: 3,
+      mesaId: 3,
       items: [{ productoId: 'exp-poc-bra', cantidad: 1 }],
       estado: 'pendiente',
+      total: 5020,
     });
   });
 

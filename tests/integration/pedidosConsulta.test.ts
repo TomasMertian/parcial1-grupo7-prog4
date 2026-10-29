@@ -45,11 +45,14 @@ describe('Integración: Consultas de Pedidos (GET /pedidos)', () => {
         expect(respuesta.body[0].mesa).toBe(5);
     });
 
-    it('GET /pedidos/:id -> deberia devolver 200 y el pedido correcto', async () => {
+    it('GET /pedidos/:id -> deberia devolver el pedido con estado, items y total', async () => {
         const respuesta = await request(app).get('/pedidos/pedido-123');
 
         expect(respuesta.status).toBe(200);
         expect(respuesta.body.id).toBe('pedido-123');
+        expect(respuesta.body.estado).toBe('pendiente');
+        expect(respuesta.body.items).toEqual([]);
+        expect(respuesta.body.total).toBe(1000);
     });
 
     it('GET /pedidos/:id -> deberia devolver 404 si el ID no existe', async () => {

@@ -1,24 +1,87 @@
-//falta implementacion de GET productos
-import {it, describe, expect} from 'vitest';
-import  Request from 'supertest';
-import {crearDeps, makeApp} from '../../src/app';
+
+import { it, describe, expect } from 'vitest';
+import request from 'supertest';
+import { crearDeps, makeApp } from '../../src/app';
+import { Fabrica } from '../../src/models/fabrica';
+import productosData from '../../src/data/productos.json';
 
 
-const app = makeApp(crearDeps())
-describe("integracion: endpoints de productos",() => {
-    it("GET /productos debe devolver 200 y la lista ",async () => {
-        const response= await Request(app).get('/productos');
+const app = makeApp(crearDeps());
 
-        expect(response.status).toBe(200);
-        expect(Array.isArray(response.body)).toBe(true)
-        expect(response.body).toBeDefined()
-    })
-})
-describe("integracion: endpoints de productos",() => {
-    it("GET /productos/:ID debe devolver 200 y el producto ",async () => {
-        const response= await Request(app).get('/productos/pas-muffin');
+describe('Integración: endpoints de productos', () => {
+    it('GET /productos debe devolver 200 y una lista', async () => {
+        const response = await request(app).get('/productos');
 
         expect(response.status).toBe(200);
-        expect(response.body).toBeDefined()
-    })
-})
+        expect(Array.isArray(response.body)).toBe(true);
+    });
+
+    it('GET /productos debe devolver precio y tipo para cada producto', async () => {
+    const response = await request(app).get('/productos');
+
+    expect(response.status).toBe(200);
+
+    for (const producto of response.body) {
+        expect(producto).toHaveProperty('precio');
+        expect(producto).toHaveProperty('tipo');
+    }
+    });
+
+    it('GET /productos/:id debe devolver 200 y el producto', async () => {
+        const response = await request(app).get('/productos/pas-muffin');
+
+        expect(response.status).toBe(200);
+        expect(response.body).toBeDefined();
+    });
+
+    it('GET /productos/:id debe devolver precio y tipo', async () => {
+    const response = await request(app).get('/productos/pas-muffin');
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('precio');
+    expect(response.body).toHaveProperty('tipo');
+    });
+
+    it('GET /productos/:id debe devolver 404 y un error con formato JSON', async () => {
+    const response = await request(app).get('/productos/pas-maffin');
+
+    expect(response.status).toBe(404);
+    expect(response.body).toEqual({
+        error: 'Producto no encontrado',
+    });
+    });
+
+    it.each([
+    ['exp-poc-bra', 5020],
+    ['exp-poc-col', 5740],
+    ['exp-poc-eti', 6820],
+    ['exp-med-bra', 6280],
+    ['exp-med-col', 7360],
+    ['exp-med-eti', 8980],
+    ['exp-taz-bra', 7540],
+    ['exp-taz-col', 8980],
+    ['exp-taz-eti', 11140],
+])(
+    'GET /productos devuelve el precio correcto para %s',
+    async (id, precioEsperado) => {
+    const response = await request(app).get('/productos');
+
+    expect(response.status).toBe(200);
+
+    const producto = response.body.find(
+        (p: { id: string }) => p.id === id,
+    );
+
+    expect(producto).toBeDefined();
+
+    const productoOriginal = productosData.find(
+        (p) => p.id === id,
+    );
+
+    expect(productoOriginal).toBeDefined();
+
+    const productoCalculado = Fabrica.crear(productoOriginal!);
+    expect(productoCalculado.calcularPrecio()).toBe(precioEsperado);
+    },
+);
+});

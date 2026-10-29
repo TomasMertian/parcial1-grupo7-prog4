@@ -7,6 +7,7 @@ export interface PedidoRepository {
   findAll(): PedidoRecord[];
   findById(id: string): PedidoRecord | undefined;
   create(pedido: PedidoRecord): PedidoRecord;
+  clear(): void;
 }
 
 // Implementación sobre un archivo JSON (src/data/pedidos.json).
@@ -29,6 +30,10 @@ export class JsonPedidoRepository implements PedidoRepository {
 
   findById(id: string): PedidoRecord | undefined {
     return this.read().find((pedido) => pedido.id === id);
+  }
+
+  clear(): void {
+    this.write([]);
   }
 
   create(pedido: PedidoRecord): PedidoRecord {
