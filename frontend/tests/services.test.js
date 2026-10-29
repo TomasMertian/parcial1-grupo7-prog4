@@ -16,7 +16,15 @@ afterEach(() => {
 
 describe('Servicio de productos', () => {
     it('obtiene la lista de productos', async () => {
-        const productos = [{ id: 'exp-poc-bra', nombre: 'Expreso Brasil', precio: 5020, tipo: 'expreso' }]
+        const productos = [{ 
+        id: 'exp-poc-bra', 
+        nombre: 'Expreso Brasil', 
+        precioBase: 4000, 
+        precio: 5020, 
+        tipo: 'expreso', 
+        variedad: 'Brasil', 
+        tamano: 'Pocillo' 
+}]
         vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
             new Response(JSON.stringify(productos), { status: 200 }),
         ))
@@ -26,7 +34,15 @@ describe('Servicio de productos', () => {
     })
 
     it('obtiene un producto por ID', async () => {
-        const producto = { id: 'exp-poc-bra', precio: 5020 }
+        const producto = { 
+        id: 'exp-poc-bra', 
+        nombre: 'Expreso Brasil', 
+        precioBase: 4000, 
+        precio: 5020, 
+        tipo: 'expreso', 
+        variedad: 'Brasil', 
+        tamano: 'Pocillo' 
+        }
         vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
             new Response(JSON.stringify(producto), { status: 200 }),
         ))
