@@ -1,35 +1,13 @@
 import { solicitudApi } from './http'
-import { z } from 'zod'
+import { MenuSchema, ProductoSchema } from '../api/contratos';
+import type { Producto, Menu } from '../api/contratos';
 
-const ProductoSchema = z.object({
-    id: z.string(),
-    nombre: z.string(),
-    tipo: z.string().optional(),
-    precio: z.number(),
-})
-
-const ProductosSchema = z.array(ProductoSchema)
-
-export type ProductoApi = z.infer<typeof ProductoSchema>
-
-export async function obtenerProductos(): Promise<ProductoApi[]> {
-    const datos = await solicitudApi<unknown>('/productos')
-    return ProductosSchema.parse(datos)
+export async function obtenerProductos(): Promise<Menu> {
+    const datos = await solicitudApi<unknown>('/productos');
+    return MenuSchema.parse(datos); 
 }
 
-
-const ProductoPorIdSchema = z.object({
-    id: z.string(),
-    nombre: z.string().optional(),
-    tipo: z.string().optional(),
-    precio: z.number(),
-})
-
-export async function obtenerProductoPorId(
-    id: string,
-): Promise<z.infer<typeof ProductoPorIdSchema>> {
-    const datos = await solicitudApi<unknown>(
-        `/productos/${encodeURIComponent(id)}`,
-    )
-    return ProductoPorIdSchema.parse(datos)
+export async function obtenerProductoPorId(id: string): Promise<Producto> {
+    const datos = await solicitudApi<unknown>(`/productos/${encodeURIComponent(id)}`);
+    return ProductoSchema.parse(datos);
 }
