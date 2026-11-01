@@ -41,7 +41,7 @@ describe('Componente Carrito', () => {
 
     expect(screen.getByText('Muffin de chocolate')).toBeInTheDocument();
     expect(screen.getByText(/cantidad:\s*2/i)).toBeInTheDocument();
-    expect(screen.getByText(/5\.000/)).toBeInTheDocument();
+    expect(screen.getByText(/Subtotal del carrito: \$5\.000/)).toBeInTheDocument();
   });
 
   it('permite restar una unidad', () => {
