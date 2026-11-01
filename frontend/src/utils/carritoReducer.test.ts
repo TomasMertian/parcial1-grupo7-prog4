@@ -1,6 +1,7 @@
 
 import { describe, it, expect } from 'vitest';
 import { carritoReducer } from './carritoReducer';
+import { calcularSubtotal } from './carritoReducer';
 
 describe('carritoReducer', () => {
   it('agrega un producto al carrito con cantidad 1', () => {
@@ -126,4 +127,36 @@ it('elimina un producto completamente del carrito', () => {
       cantidad: 1,
     },
   ]);
+});
+
+
+it('calcula el subtotal de los productos del carrito', () => {
+  const producto = {
+    id: 'pas-muffin',
+    nombre: 'Muffin de chocolate',
+    precio: 2500,
+    tipo: 'pasteleria',
+  };
+
+  const otroProducto = {
+    id: 'pas-cookie',
+    nombre: 'Cookie de chocolate',
+    precio: 1500,
+    tipo: 'pasteleria',
+  };
+
+  const estadoInicial = [
+    {
+      producto,
+      cantidad: 2,
+    },
+    {
+      producto: otroProducto,
+      cantidad: 1,
+    },
+  ];
+
+  const subtotal = calcularSubtotal(estadoInicial);
+
+  expect(subtotal).toBe(6500);
 });
