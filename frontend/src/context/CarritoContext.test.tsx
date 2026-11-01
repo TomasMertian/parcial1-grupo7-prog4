@@ -10,6 +10,7 @@ function CarritoPrueba() {
     agregarProducto,
     restarProducto,
     eliminarProducto,
+    vaciarCarrito,
   } = useCarrito();
 
   const producto = {
@@ -35,6 +36,10 @@ function CarritoPrueba() {
 
       <button onClick={() => eliminarProducto(producto.id)}>
         Eliminar
+      </button>
+
+      <button onClick={vaciarCarrito}>
+        Vaciar
       </button>
     </div>
   );
@@ -106,4 +111,24 @@ describe('CarritoContext', () => {
     expect(screen.getByText('Productos: 0')).toBeTruthy();
     expect(screen.getByText('Subtotal: 0')).toBeTruthy();
   });
+  
+it('vacía el carrito y reinicia el subtotal', () => {
+  render(
+    <CarritoProvider>
+      <CarritoPrueba />
+    </CarritoProvider>
+  );
+
+  act(() => {
+    screen.getByRole('button', { name: 'Agregar' }).click();
+  });
+
+  act(() => {
+    screen.getByRole('button', { name: 'Vaciar' }).click();
+  });
+
+  expect(screen.getByText('Productos: 0')).toBeTruthy();
+  expect(screen.getByText('Subtotal: 0')).toBeTruthy();
+});
+
 });
