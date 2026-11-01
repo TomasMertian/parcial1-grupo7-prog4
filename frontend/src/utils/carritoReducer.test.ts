@@ -58,3 +58,32 @@ it('aumenta la cantidad cuando se agrega el mismo producto nuevamente', () => {
     },
   ]);
 });
+
+
+it('resta una unidad de un producto del carrito', () => {
+  const producto = {
+    id: 'pas-muffin',
+    nombre: 'Muffin de chocolate',
+    precio: 2500,
+    tipo: 'pasteleria',
+  };
+
+  const estadoInicial = [
+    {
+      producto,
+      cantidad: 2,
+    },
+  ];
+
+  const nuevoEstado = carritoReducer(estadoInicial, {
+    tipo: 'RESTAR',
+    productoId: 'pas-muffin',
+  });
+
+  expect(nuevoEstado).toEqual([
+    {
+      producto,
+      cantidad: 1,
+    },
+  ]);
+});
