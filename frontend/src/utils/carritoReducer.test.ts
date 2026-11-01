@@ -88,3 +88,42 @@ it('resta una unidad de un producto del carrito', () => {
   ]);
 });
 
+
+it('elimina un producto completamente del carrito', () => {
+  const producto = {
+    id: 'pas-muffin',
+    nombre: 'Muffin de chocolate',
+    precio: 2500,
+    tipo: 'pasteleria',
+  };
+
+  const otroProducto = {
+    id: 'pas-cookie',
+    nombre: 'Cookie de chocolate',
+    precio: 1500,
+    tipo: 'pasteleria',
+  };
+
+  const estadoInicial = [
+    {
+      producto,
+      cantidad: 3,
+    },
+    {
+      producto: otroProducto,
+      cantidad: 1,
+    },
+  ];
+
+  const nuevoEstado = carritoReducer(estadoInicial, {
+    tipo: 'ELIMINAR',
+    productoId: 'pas-muffin',
+  });
+
+  expect(nuevoEstado).toEqual([
+    {
+      producto: otroProducto,
+      cantidad: 1,
+    },
+  ]);
+});
