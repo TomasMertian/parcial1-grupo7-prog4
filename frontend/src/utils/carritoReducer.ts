@@ -15,6 +15,10 @@ export type AccionCarrito =
   | {
       tipo: 'AGREGAR';
       producto: ProductoCarrito;
+    }
+  | {
+      tipo: 'RESTAR';
+      productoId: string;
     };
 
 export function carritoReducer(
@@ -42,6 +46,20 @@ export function carritoReducer(
           cantidad: 1,
         },
       ];
+    }
+
+    case 'RESTAR': {
+      return estado
+        .map((item) =>
+          item.producto.id === accion.productoId
+            ? { ...item, cantidad: item.cantidad - 1 }
+            : item
+        )
+        .filter((item) => item.cantidad > 0);
+    }
+
+    default: {
+      return estado;
     }
   }
 }
