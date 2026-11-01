@@ -19,6 +19,10 @@ export type AccionCarrito =
   | {
       tipo: 'RESTAR';
       productoId: string;
+    }
+  | {
+      tipo: 'ELIMINAR';
+      productoId: string;
     };
 
 export function carritoReducer(
@@ -56,6 +60,12 @@ export function carritoReducer(
             : item
         )
         .filter((item) => item.cantidad > 0);
+    }
+
+    case 'ELIMINAR': {
+      return estado.filter(
+        (item) => item.producto.id !== accion.productoId
+      );
     }
 
     default: {
