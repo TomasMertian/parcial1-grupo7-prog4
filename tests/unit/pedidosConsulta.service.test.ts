@@ -38,27 +38,27 @@ afterEach(() => {
 
 it('deberia listar todos los pedidos guardados', () => {
     // uso el servicio de creacion para agregar algunos pedidos
-    servicioCreacion.crear({ mesa: 10, items: [] });
-    servicioCreacion.crear({ mesa: 12, items: [] });
+    servicioCreacion.crear({ mesaId: 10, items: [] });
+    servicioCreacion.crear({ mesaId: 12, items: [] });
 
     // pruebo mi funcion:
     const resultado = servicioConsulta.listar();
     
     expect(resultado).toHaveLength(2);
-    expect(resultado[0].mesa).toBe(10);
-    expect(resultado[1].mesa).toBe(12);
+    expect(resultado[0].mesaId).toBe(10);
+    expect(resultado[1].mesaId).toBe(12);
 });
 
 it('deberia obtener un pedido especifico por su ID', () => {
     // creo uno y guardo la respuesta para saber que ID se genero
-    const pedidoCreado = servicioCreacion.crear({ mesa: 5, items: [] });
+    const pedidoCreado = servicioCreacion.crear({ mesaId: 5, items: [] });
     
     // pruebo mi funcion
     const resultado = servicioConsulta.obtener(pedidoCreado.id);
     
     expect(resultado).not.toBeUndefined();
     expect(resultado?.id).toBe(pedidoCreado.id);
-    expect(resultado?.mesa).toBe(5);
+    expect(resultado?.mesaId).toBe(5);
 });
 
 it('deberia devolver undefined si se busca un ID que no existe', () => {

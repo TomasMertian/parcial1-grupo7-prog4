@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import type { PedidoRepository } from '../repositories/PedidoRepository';
 import type { ProductoRepository } from '../repositories/ProductoRepository';
+import { ReportesService } from '../services/reportes.service';
+import { ReportesController } from '../controllers/reportes.controller';
 
 // Router de reportes. Ya está montado en app.ts y se deja sin endpoints lo completa Est 5.
 // Recibe pedidos y productos: los reportes necesitan el nombre del producto
@@ -11,8 +13,11 @@ export function makeReportesRouter(
 ): Router {
   const router = Router();
 
-  // TODO(Est 5): GET /facturacion  -> { facturacionTotal }
-  // TODO(Est 5): GET /mas-vendido  -> { productoId, nombre, cantidad } o null si no hay ventas
+  const service = new ReportesService(_pedidos, _productos);
+  const controller = new ReportesController(service);
+
+  router.get('/facturacion', controller.obtenerFacturacion);
+  router.get('/mas-vendido', controller.obtenerMasVendido);
 
   return router;
 }

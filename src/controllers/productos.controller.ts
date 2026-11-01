@@ -17,7 +17,8 @@ export class productoController {
             //devolvemos un ok con la lista
             res.status(200).json(productos)
         }catch (error){
-            res.status(500)
+            //si hay un error devolvemos un 500 con un error en formato json
+            res.status(500).json({ error: 'Error interno del servidor' });
         };
     }
 
@@ -35,11 +36,12 @@ export class productoController {
                 //si existe devolvemos un ok con el producto
                 res.status(200).json(producto)
             }else{
-                //sino un error 404
-                res.status(404).json("producto no encontrado")
+                //si no existe devolvemos un 404 con un error en formato json
+                res.status(404).json({ error: 'Producto no encontrado' });
             }
         }catch (error){
-            res.status(500)
+            //si hay un error devolvemos un 500 con un error en formato json
+            res.status(500).json({ error: 'Error interno del servidor' });
         }
     }
         
