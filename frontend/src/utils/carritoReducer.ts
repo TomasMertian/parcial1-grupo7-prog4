@@ -73,3 +73,9 @@ export function carritoReducer(
     }
   }
 }
+export function calcularSubtotal(estado: ItemCarrito[]): number { //multiplica el precio del producto por la cantidad
+  return estado.reduce(
+    (total, item) => total + item.producto.precio * item.cantidad,
+    0
+  );
+}
