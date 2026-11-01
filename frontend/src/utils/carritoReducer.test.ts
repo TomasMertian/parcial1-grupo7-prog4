@@ -1,6 +1,6 @@
 
 import { describe, it, expect } from 'vitest';
-import { carritoReducer } from './carritoReducer';
+import { carritoReducer } from './carritoReducer.ts';
 
 describe('carritoReducer', () => {
   it('agrega un producto al carrito con cantidad 1', () => {
