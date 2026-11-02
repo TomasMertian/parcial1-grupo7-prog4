@@ -6,6 +6,7 @@ import { makeProductosRouter } from './routes/productos.routes';
 import { makePedidosRouter } from './routes/pedidos.routes';
 import { makeReportesRouter } from './routes/reportes.routes';
 import { makePedidosConsultaRouter } from './routes/pedidosConsulta.routes';
+import { makeTestRouter } from './routes/test.routes';
 
 // Dependencias de la app (inyección de dependencias).
 // En tests se puede pasar un AppDeps con repos apuntando a un JSON de prueba.
@@ -27,6 +28,10 @@ export function crearDeps(): AppDeps {
 export function makeApp(deps: AppDeps = crearDeps()) {
   const app = express();
   app.use(express.json());
+  
+  if (process.env.NODE_ENV === 'test') {
+    app.use('/__test__', makeTestRouter(deps.pedidos));
+  }
 
   app.get('/health', (_req, res) => res.json({ ok: true }));
 

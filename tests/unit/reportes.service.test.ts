@@ -14,6 +14,7 @@ describe('ReportesService', () => {
         { productoId: 'exp-poc-bra', cantidad: 2 },
         { productoId: 'pas-muffin', cantidad: 1 },
       ],
+      total: 5020 * 2 + 2500 * 1,
     },
     {
       id: 'P2',
@@ -23,6 +24,7 @@ describe('ReportesService', () => {
         { productoId: 'exp-poc-bra', cantidad: 1 },
         { productoId: 'pas-selva', cantidad: 2 },
       ],
+      total: 5020 * 1 + 4200 * 2,
     },
   ];
 
@@ -54,6 +56,7 @@ describe('ReportesService', () => {
       findAll: vi.fn(() => pedidos),
       findById: vi.fn(),
       create: vi.fn(),
+      clear: vi.fn(),
     };
 
     const productoRepo: ProductoRepository = {
