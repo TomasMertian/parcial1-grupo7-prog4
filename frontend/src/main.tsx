@@ -13,8 +13,8 @@ if (!root) {
 
 createRoot(root).render(
   <StrictMode>
-    <CarritoProvider>
-      <App />
+    <CarritoProvider> //mantiene disponible el estado del carrito
+      <App /> //componente principal
     </CarritoProvider>
   </StrictMode>,
 )
