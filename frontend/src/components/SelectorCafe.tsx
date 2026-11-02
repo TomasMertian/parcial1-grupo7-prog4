@@ -58,6 +58,7 @@
             <div>
             <h3>Paso 3: Confirmar</h3>
             <p>Resumen: Café {variedad} ({tamano})</p>
+            <p>Precio total: ${precioBase * cantidad}</p>
             <div className="control-cantidad">
                 <label htmlFor="cantidad">Cantidad:</label>
                 <button 
