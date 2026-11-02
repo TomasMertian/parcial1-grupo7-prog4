@@ -1,16 +1,20 @@
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App'
+import { CarritoProvider } from './context/CarritoContext'
 
 const root = document.getElementById('root')
 
 if (!root) {
-  throw new Error('No se encontr� el elemento root')
+  throw new Error('No se encontró el elemento root')
 }
 
 createRoot(root).render(
   <StrictMode>
-    <App />
+    <CarritoProvider> //mantiene disponible el estado del carrito
+      <App /> //componente principal
+    </CarritoProvider>
   </StrictMode>,
 )

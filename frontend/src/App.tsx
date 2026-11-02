@@ -4,6 +4,10 @@ import { obtenerProductos } from './services/productos'
 import type { Menu } from './api/contratos' 
 import { obtenerMesaDeUrl } from './utils/mesa'
 import { SelectorCafe } from './components/SelectorCafe' 
+import { Carrito } from './components/Carrito'
+import { Pasteleria } from './components/Pasteleria'
+import { useCarrito } from './context/CarritoContext'
+
 import './App.css'
 
 type EstadoProductos =
@@ -12,11 +16,16 @@ type EstadoProductos =
   | { estado: 'exito'; productos: Menu }
 
 export default function App() {
+
+  const { agregarProducto } = useCarrito()
+
+
   const [estado, setEstado] = useState<EstadoProductos>({ estado: 'cargando' })
   const [mesa, setMesa] = useState<number | null>(null)
 
+
   // estado para controlar si el usuario esta armando un cafe
-  const [cafeSeleccionado, setCafeSeleccionado] = useState<{ nombre: string; precioBase: number } | null>(null)
+  const [cafeSeleccionado, setCafeSeleccionado] = useState<{ id : string, nombre: string, precio: number, tipo: string } | null>(null)
 
   useEffect(() => {
     const numeroMesa = obtenerMesaDeUrl(window.location.search)
@@ -34,11 +43,38 @@ export default function App() {
   }, [])
 
   // funcion para manejar cuando el usuario termina los 3 pasos del selector
-  const manejarAgregarAlCarrito = (seleccion: { variedad: string; tamano: string; cantidad: number }) => {
-    // aca se deberia conectar con el carrito (mai)
-    alert(`¡Agregaste al carrito: ${seleccion.cantidad}x ${cafeSeleccionado?.nombre} (${seleccion.tamano}, variedad ${seleccion.variedad})!`)
-    setCafeSeleccionado(null) // Cerramos el selector
+
+const manejarAgregarAlCarrito = (seleccion: {
+  variedad: string
+  tamano: string
+  cantidad: number
+}) => {
+  if (!cafeSeleccionado || estado.estado !== 'exito') return
+
+  const productoElegido = estado.productos.find(
+    (producto) =>
+      producto.tipo === cafeSeleccionado.tipo &&
+      producto.tipo !== 'pasteleria' &&
+      producto.variedad === seleccion.variedad &&
+      producto.tamano === seleccion.tamano
+  )
+
+  if (!productoElegido) return
+
+  const productoCarrito = {
+    id: productoElegido.id,
+    nombre: productoElegido.nombre,
+    precio: productoElegido.precio,
+    tipo: productoElegido.tipo,
   }
+
+  for (let i = 0; i < seleccion.cantidad; i++) {
+    agregarProducto(productoCarrito)
+  }
+
+  setCafeSeleccionado(null)
+}
+
 
   return (
     <main className="menu">
@@ -77,7 +113,9 @@ export default function App() {
               <p>No hay productos disponibles.</p>
             ) : (
               <div className="lista-productos">
-                {estado.productos.map((producto) => (
+                {estado.productos
+                .filter((producto) => producto.tipo !== 'pasteleria')
+                  .map((producto) => (
                   <article className="producto" key={producto.id}>
                     <div>
                       <span className="tipo">{producto.tipo}</span>
@@ -94,7 +132,7 @@ export default function App() {
                     {producto.tipo === 'expreso' || producto.tipo === 'filtrado' ? (
                         <button 
                           style={{ marginTop: '10px', padding: '5px 10px', cursor: 'pointer' }}
-                          onClick={() => setCafeSeleccionado({ nombre: producto.nombre, precioBase: producto.precioBase ?? producto.precio })}
+                          onClick={() => setCafeSeleccionado({ id: String(producto.id), nombre: producto.nombre, precio:  producto.precio, tipo: producto.tipo })}
                         >
                           Elegir opciones
                         </button>
@@ -110,6 +148,9 @@ export default function App() {
           </>
         )}
       </section>
+      {estado.estado === 'exito' && (
+        <Pasteleria productos={estado.productos} />)} // Agregamos la sección de pastelería
+          <Carrito />
       {cafeSeleccionado && (
         <div style={{
           position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
@@ -118,7 +159,7 @@ export default function App() {
         }}>
           <h2>Personalizando: {cafeSeleccionado.nombre}</h2>
           <SelectorCafe 
-            precioBase={cafeSeleccionado.precioBase} 
+            precioBase={cafeSeleccionado.precio} 
             onAgregar={manejarAgregarAlCarrito} 
           />
           <button 
