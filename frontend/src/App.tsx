@@ -4,6 +4,11 @@ import { obtenerProductos } from './services/productos'
 import type { Menu } from './api/contratos' 
 import { obtenerMesaDeUrl } from './utils/mesa'
 import { SelectorCafe } from './components/SelectorCafe' 
+import { CarritoProvider } from './context/CarritoContext'
+import { Carrito } from './components/Carrito'
+import { Pasteleria } from './components/Pasteleria'
+import { useCarrito } from './context/CarritoContext'
+
 import './App.css'
 
 type EstadoProductos =
@@ -77,7 +82,9 @@ export default function App() {
               <p>No hay productos disponibles.</p>
             ) : (
               <div className="lista-productos">
-                {estado.productos.map((producto) => (
+                {estado.productos
+                .filter((producto) => producto.tipo !== 'pasteleria')
+                  .map((producto) => (
                   <article className="producto" key={producto.id}>
                     <div>
                       <span className="tipo">{producto.tipo}</span>
@@ -110,6 +117,9 @@ export default function App() {
           </>
         )}
       </section>
+      {estado.estado === 'exito' && (
+        <Pasteleria productos={estado.productos} />)}
+          <Carrito />
       {cafeSeleccionado && (
         <div style={{
           position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
