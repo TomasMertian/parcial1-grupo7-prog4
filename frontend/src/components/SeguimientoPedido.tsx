@@ -22,7 +22,12 @@ export function SeguimientoPedido({ pedido }: SeguimientoPedidoProps) {
 
     try {
       const respuesta = await obtenerPedidoPorId(pedido.id)
-      setEstado(respuesta.estado as EstadoPedido)
+
+      if (respuesta.estado === undefined) {
+        throw new Error('La API devolvió una respuesta incompleta')
+      }
+
+      setEstado(respuesta.estado)
     } catch (causa) {
       setError(
         causa instanceof Error
