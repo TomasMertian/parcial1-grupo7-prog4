@@ -3,6 +3,13 @@ import type { ItemPedido, PedidoApi } from '../services/pedidos'
 
 export type EstadoPedido = NonNullable<PedidoApi['estado']>
 
+export interface PedidoConfirmado {
+  id: string
+  estado: EstadoPedido
+  total: number
+  mesaId?: number
+}
+
 const ETIQUETAS_ESTADO: Record<EstadoPedido, string> = {
   pendiente: 'Pendiente',
   en_preparacion: 'En preparación',
@@ -12,6 +19,14 @@ const ETIQUETAS_ESTADO: Record<EstadoPedido, string> = {
 
 export function etiquetaEstado(estado: EstadoPedido): string {
   return ETIQUETAS_ESTADO[estado]
+}
+
+export function formatearPrecio(precio: number): string {
+  return precio.toLocaleString('es-AR', {
+    style: 'currency',
+    currency: 'ARS',
+    maximumFractionDigits: 0,
+  })
 }
 
 export function crearCuerpoPedido(
