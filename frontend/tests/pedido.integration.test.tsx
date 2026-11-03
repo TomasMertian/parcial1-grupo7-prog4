@@ -177,7 +177,7 @@ describe('Integración del pedido', () => {
     await usuario.click(screen.getByRole('button', { name: /agregar muffin/i }))
     await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
 
-    expect(await screen.findByRole('alert')).toHaveTextContent(/respuesta incompleta/i)
+    expect(await screen.findByRole('alert')).toHaveTextContent(/contrato/i)
     expect(screen.getByText(/items en carrito: 1/i)).toBeInTheDocument()
   })
 
@@ -191,7 +191,13 @@ describe('Integración del pedido', () => {
         ),
       ),
       http.get('*/pedidos/pedido-1', () =>
-        HttpResponse.json({ id: 'pedido-1', mesaId: 4, estado: 'en_preparacion', total: 2500 }),
+      HttpResponse.json({
+        id: 'pedido-1',
+        mesaId: 4,
+        items: [{ productoId: 'pas-muffin', cantidad: 1 }],
+        estado: 'en_preparacion',
+        total: 2500,
+      }),
       ),
     )
 
