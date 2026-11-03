@@ -1,3 +1,4 @@
+import { ZodError } from 'zod'
 import type { ItemCarrito } from './carritoReducer'
 import type { ItemPedido, PedidoApi } from '../services/pedidos'
 
@@ -27,6 +28,17 @@ export function formatearPrecio(precio: number): string {
     currency: 'ARS',
     maximumFractionDigits: 0,
   })
+}
+
+export function mensajeDeError(
+  causa: unknown,
+  mensajePorDefecto: string,
+): string {
+  if (causa instanceof ZodError) {
+    return 'La API devolvió datos con formato inesperado'
+  }
+
+  return causa instanceof Error ? causa.message : mensajePorDefecto
 }
 
 export function crearCuerpoPedido(

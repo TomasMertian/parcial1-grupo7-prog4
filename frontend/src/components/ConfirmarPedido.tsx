@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import { useCarrito } from '../context/CarritoContext'
 import { crearPedido } from '../services/pedidos'
-import { crearCuerpoPedido, type PedidoConfirmado } from '../utils/pedido'
+import {
+  crearCuerpoPedido,
+  mensajeDeError,
+  type PedidoConfirmado,
+} from '../utils/pedido'
 import { SeguimientoPedido } from './SeguimientoPedido'
 
 interface ConfirmarPedidoProps {
@@ -40,11 +44,7 @@ export function ConfirmarPedido({ mesa }: ConfirmarPedidoProps) {
       setPedido(pedidoConfirmado)
       vaciarCarrito()
     } catch (causa) {
-      setError(
-        causa instanceof Error
-          ? causa.message
-          : 'No se pudo confirmar el pedido',
-      )
+      setError(mensajeDeError(causa, 'No se pudo confirmar el pedido'))
     } finally {
       setEnviando(false)
     }

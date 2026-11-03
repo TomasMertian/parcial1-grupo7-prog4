@@ -3,6 +3,7 @@ import { obtenerPedidoPorId } from '../services/pedidos'
 import {
   etiquetaEstado,
   formatearPrecio,
+  mensajeDeError,
   type EstadoPedido,
   type PedidoConfirmado,
 } from '../utils/pedido'
@@ -29,11 +30,7 @@ export function SeguimientoPedido({ pedido }: SeguimientoPedidoProps) {
 
       setEstado(respuesta.estado)
     } catch (causa) {
-      setError(
-        causa instanceof Error
-          ? causa.message
-          : 'No se pudo actualizar el estado',
-      )
+      setError(mensajeDeError(causa, 'No se pudo actualizar el estado'))
     } finally {
       setActualizando(false)
     }
