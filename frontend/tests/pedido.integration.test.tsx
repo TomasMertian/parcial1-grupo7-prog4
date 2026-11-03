@@ -86,6 +86,32 @@ describe('Integración del pedido', () => {
     })
   })
 
+  it('muestra el total y el estado que devuelve la API sin recalcularlos', async () => {
+    const usuario = userEvent.setup()
+    server.use(
+      http.post('*/pedidos', () =>
+        HttpResponse.json(
+          {
+            id: 'pedido-2',
+            mesaId: 4,
+            items: [{ productoId: 'pas-muffin', cantidad: 1 }],
+            estado: 'listo',
+            total: 17220,
+          },
+          { status: 201 },
+        ),
+      ),
+    )
+
+    renderizar(4)
+    await usuario.click(screen.getByRole('button', { name: /agregar muffin/i }))
+    await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
+
+    expect(await screen.findByText(/pedido #pedido-2/i)).toBeInTheDocument()
+    expect(screen.getByText(/estado:\s*listo/i)).toBeInTheDocument()
+    expect(screen.getByText(/17\.220/)).toBeInTheDocument()
+  })
+
   it('muestra el mensaje de la API y conserva el carrito ante un 4xx', async () => {
     const usuario = userEvent.setup()
     server.use(
