@@ -1,6 +1,9 @@
+import { useState } from 'react'
+import { obtenerPedidoPorId } from '../services/pedidos'
 import {
   etiquetaEstado,
   formatearPrecio,
+  type EstadoPedido,
   type PedidoConfirmado,
 } from '../utils/pedido'
 
@@ -9,6 +12,28 @@ interface SeguimientoPedidoProps {
 }
 
 export function SeguimientoPedido({ pedido }: SeguimientoPedidoProps) {
+  const [estado, setEstado] = useState<EstadoPedido>(pedido.estado)
+  const [actualizando, setActualizando] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  async function actualizar() {
+    setActualizando(true)
+    setError(null)
+
+    try {
+      const respuesta = await obtenerPedidoPorId(pedido.id)
+      setEstado(respuesta.estado as EstadoPedido)
+    } catch (causa) {
+      setError(
+        causa instanceof Error
+          ? causa.message
+          : 'No se pudo actualizar el estado',
+      )
+    } finally {
+      setActualizando(false)
+    }
+  }
+
   return (
     <section
       aria-labelledby="seguimiento-pedido"
@@ -21,10 +46,23 @@ export function SeguimientoPedido({ pedido }: SeguimientoPedidoProps) {
           ? `Mesa ${pedido.mesaId}`
           : 'Retiro en barra'}
       </p>
-      <p>Estado: {etiquetaEstado(pedido.estado)}</p>
+      <p aria-live="polite">Estado: {etiquetaEstado(estado)}</p>
       <p>
         <strong>Total: {formatearPrecio(pedido.total)}</strong>
       </p>
+      {error !== null && (
+        <p className="mensaje-error alert alert-danger" role="alert">
+          {error}
+        </p>
+      )}
+      <button
+        type="button"
+        className="btn btn-secondary"
+        onClick={actualizar}
+        disabled={actualizando}
+      >
+        {actualizando ? 'Actualizando...' : 'Actualizar estado'}
+      </button>
     </section>
   )
 }
