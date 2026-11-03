@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+.e2e-pedidos.json
+
+test-results/
+playwright-report/
