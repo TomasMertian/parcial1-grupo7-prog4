@@ -82,4 +82,28 @@ describe('ConfirmarPedido', () => {
     })
     expect(await screen.findByText(/retiro en barra/i)).toBeInTheDocument()
   })
+
+  it('muestra el error de la API y conserva el carrito', async () => {
+    const usuario = userEvent.setup()
+    mocks.items = [muffin]
+    mocks.crearPedido.mockRejectedValue(new Error('La mesa no existe'))
+
+    render(<ConfirmarPedido mesa={4} />)
+    await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('La mesa no existe')
+    expect(mocks.vaciarCarrito).not.toHaveBeenCalled()
+  })
+
+  it('muestra el error de conexión y conserva el carrito', async () => {
+    const usuario = userEvent.setup()
+    mocks.items = [muffin]
+    mocks.crearPedido.mockRejectedValue(new Error('No se pudo conectar con la API'))
+
+    render(<ConfirmarPedido mesa={4} />)
+    await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/no se pudo conectar con la api/i)
+    expect(mocks.vaciarCarrito).not.toHaveBeenCalled()
+  })
 })
