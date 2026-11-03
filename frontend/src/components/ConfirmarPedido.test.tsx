@@ -106,4 +106,16 @@ describe('ConfirmarPedido', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent(/no se pudo conectar con la api/i)
     expect(mocks.vaciarCarrito).not.toHaveBeenCalled()
   })
+
+  it('rechaza una respuesta incompleta y conserva el carrito', async () => {
+    const usuario = userEvent.setup()
+    mocks.items = [muffin]
+    mocks.crearPedido.mockResolvedValue({ id: undefined, estado: undefined, total: undefined })
+
+    render(<ConfirmarPedido mesa={4} />)
+    await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/respuesta incompleta/i)
+    expect(mocks.vaciarCarrito).not.toHaveBeenCalled()
+  })
 })

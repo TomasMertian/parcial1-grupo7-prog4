@@ -140,4 +140,18 @@ describe('Integración del pedido', () => {
     await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
     expect(await screen.findByText(/pedido #pedido-1/i)).toBeInTheDocument()
   })
+
+  it('rechaza una respuesta que no trae los datos del pedido', async () => {
+    const usuario = userEvent.setup()
+    server.use(
+      http.post('*/pedidos', () => HttpResponse.json({ inesperado: true }, { status: 201 })),
+    )
+
+    renderizar(4)
+    await usuario.click(screen.getByRole('button', { name: /agregar muffin/i }))
+    await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/respuesta incompleta/i)
+    expect(screen.getByText(/items en carrito: 1/i)).toBeInTheDocument()
+  })
 })
