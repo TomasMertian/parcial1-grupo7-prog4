@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { crearCuerpoPedido, etiquetaEstado } from './pedido'
+import { crearCuerpoPedido, etiquetaEstado, formatearPrecio } from './pedido'
 
 const muffin = {
   producto: { id: 'pas-muffin', nombre: 'Muffin de chocolate', precio: 2500, tipo: 'pasteleria' },
@@ -27,5 +27,11 @@ describe('etiquetaEstado', () => {
     expect(etiquetaEstado('en_preparacion')).toBe('En preparación')
     expect(etiquetaEstado('listo')).toBe('Listo')
     expect(etiquetaEstado('entregado')).toBe('Entregado')
+  })
+})
+
+describe('formatearPrecio', () => {
+  it('formatea en pesos argentinos sin decimales', () => {
+    expect(formatearPrecio(7360)).toMatch(/\$\s*7\.360/)
   })
 })
