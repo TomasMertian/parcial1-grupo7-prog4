@@ -17,7 +17,7 @@ export async function obtenerFacturacion(): Promise<Facturacion> {
   const datos = await solicitudApi<unknown>(
     '/reportes/facturacion',
     {},
-    'No se pudo obtener la facturación',
+    'No se pudo obtener la facturacion',
   )
   return validarContrato(FacturacionSchema, datos)
 }
@@ -26,7 +26,7 @@ export async function obtenerMasVendido(): Promise<MasVendido | null> {
   const datos = await solicitudApi<unknown>(
     '/reportes/mas-vendido',
     {},
-    'No se pudo obtener el producto más vendido',
+    'No se pudo obtener el producto mas vendido',
   )
   return validarContrato(MasVendidoSchema.nullable(), datos)
 }
