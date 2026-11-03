@@ -24,5 +24,27 @@
     ],
     "estado": "pendiente",
     "total": 7800
+  },
+  {
+    "id": "9cde1f99-a6ba-4da0-88d2-f35cf307cdb0",
+    "items": [
+      {
+        "productoId": "fil-poc-bra",
+        "cantidad": 1
+      }
+    ],
+    "estado": "pendiente",
+    "total": 4040
+  },
+  {
+    "id": "4d0f675a-178c-4922-a75d-99064cdeccc0",
+    "items": [
+      {
+        "productoId": "pas-muffin",
+        "cantidad": 10
+      }
+    ],
+    "estado": "pendiente",
+    "total": 25000
   }
 ]
