@@ -44,4 +44,15 @@ describe('SeguimientoPedido', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Pedido no encontrado')
     expect(screen.getByText(/estado:\s*pendiente/i)).toBeInTheDocument()
   })
+
+  it('conserva el estado si la actualización viene incompleta', async () => {
+    const usuario = userEvent.setup()
+    obtenerPedidoPorId.mockResolvedValue({ id: 'pedido-1', total: 5000 })
+
+    render(<SeguimientoPedido pedido={pedido} />)
+    await usuario.click(screen.getByRole('button', { name: /actualizar estado/i }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/respuesta incompleta/i)
+    expect(screen.getByText(/estado:\s*pendiente/i)).toBeInTheDocument()
+  })
 })
