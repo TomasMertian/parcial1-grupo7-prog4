@@ -15,23 +15,35 @@ interface ConfirmarPedidoProps {
 export function ConfirmarPedido({ mesa }: ConfirmarPedidoProps) {
   const { items, vaciarCarrito } = useCarrito()
   const [enviando, setEnviando] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [pedido, setPedido] = useState<PedidoConfirmado | null>(null)
 
   const confirmar = async () => {
     setEnviando(true)
-    const respuesta = await crearPedido(crearCuerpoPedido(items, mesa))
-    const mesaId = respuesta.mesaId ?? mesa
+    setError(null)
 
-    const pedidoConfirmado: PedidoConfirmado = {
-      id: respuesta.id as string,
-      estado: respuesta.estado as EstadoPedido,
-      total: respuesta.total as number,
-      ...(mesaId !== null ? { mesaId } : {}),
+    try {
+      const respuesta = await crearPedido(crearCuerpoPedido(items, mesa))
+      const mesaId = respuesta.mesaId ?? mesa
+
+      const pedidoConfirmado: PedidoConfirmado = {
+        id: respuesta.id as string,
+        estado: respuesta.estado as EstadoPedido,
+        total: respuesta.total as number,
+        ...(mesaId !== null ? { mesaId } : {}),
+      }
+
+      setPedido(pedidoConfirmado)
+      vaciarCarrito()
+    } catch (causa) {
+      setError(
+        causa instanceof Error
+          ? causa.message
+          : 'No se pudo confirmar el pedido',
+      )
+    } finally {
+      setEnviando(false)
     }
-
-    setPedido(pedidoConfirmado)
-    vaciarCarrito()
-    setEnviando(false)
   }
 
   if (pedido !== null) {
@@ -50,6 +62,11 @@ export function ConfirmarPedido({ mesa }: ConfirmarPedidoProps) {
           ? `Pedido para la Mesa ${mesa}`
           : 'Pedido para retirar en barra'}
       </p>
+      {error !== null && (
+        <p className="mensaje-error alert alert-danger" role="alert">
+          {error}
+        </p>
+      )}
       <button
         type="button"
         className="btn btn-primary"
