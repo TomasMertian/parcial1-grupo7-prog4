@@ -13,7 +13,7 @@ interface ConfirmarPedidoProps {
 }
 
 export function ConfirmarPedido({ mesa }: ConfirmarPedidoProps) {
-  const { items, vaciarCarrito } = useCarrito()
+  const { items, subtotal, vaciarCarrito } = useCarrito()
   const [enviando, setEnviando] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [pedido, setPedido] = useState<PedidoConfirmado | null>(null)
@@ -57,28 +57,41 @@ export function ConfirmarPedido({ mesa }: ConfirmarPedidoProps) {
   return (
     <section
       aria-labelledby="confirmar-pedido"
-      className="confirmar-pedido"
+      className="confirmar-pedido barra-confirmar"
       aria-busy={enviando}
     >
-      <h2 id="confirmar-pedido">Confirmar pedido</h2>
-      <p>
-        {mesa !== null
-          ? `Pedido para la Mesa ${mesa}`
-          : 'Pedido para retirar en barra'}
-      </p>
-      {error !== null && (
-        <p className="mensaje-error alert alert-danger" role="alert">
-          {error}
+      <div>
+        <h2 id="confirmar-pedido" className="h6 mb-1">Confirmar pedido</h2>
+        <p className="mb-0 small text-muted">
+          {mesa !== null ? `Mesa ${mesa}` : 'Retiro en barra'}
         </p>
-      )}
-      <button
-        type="button"
-        className="btn btn-primary"
-        onClick={confirmar}
-        disabled={items.length === 0 || enviando}
-      >
-        {enviando ? 'Enviando...' : 'Confirmar pedido'}
-      </button>
+        <p className="mb-0 fw-bold">
+          Subtotal: {subtotal.toLocaleString('es-AR', {
+            style: 'currency',
+            currency: 'ARS',
+            maximumFractionDigits: 0,
+          })}
+        </p>
+      </div>
+
+      <div className="d-flex flex-column align-items-end gap-1">
+        {error !== null && (
+          <p className="mensaje-error alert alert-danger mb-0" role="alert">
+            {error}
+          </p>
+        )}
+        {items.length === 0 && (
+          <p className="mb-0 small text-muted">Agregá productos para confirmar</p>
+        )}
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={confirmar}
+          disabled={items.length === 0 || enviando}
+        >
+          {enviando ? 'Enviando...' : 'Confirmar pedido'}
+        </button>
+      </div>
     </section>
   )
 }

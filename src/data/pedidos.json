@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "7a67d59e-0a62-4063-8d2c-841f98e0d9c3",
+    "items": [
+      {
+        "productoId": "pas-selva",
+        "cantidad": 20
+      }
+    ],
+    "estado": "pendiente",
+    "total": 84000
+  },
+  {
+    "id": "5c9b4e72-5082-4357-b381-d2e7019549fc",
+    "items": [
+      {
+        "productoId": "pas-muffin",
+        "cantidad": 1
+      },
+      {
+        "productoId": "fil-med-bra",
+        "cantidad": 1
+      }
+    ],
+    "estado": "pendiente",
+    "total": 7800
+  },
+  {
+    "id": "9cde1f99-a6ba-4da0-88d2-f35cf307cdb0",
+    "items": [
+      {
+        "productoId": "fil-poc-bra",
+        "cantidad": 1
+      }
+    ],
+    "estado": "pendiente",
+    "total": 4040
+  },
+  {
+    "id": "4d0f675a-178c-4922-a75d-99064cdeccc0",
+    "items": [
+      {
+        "productoId": "pas-muffin",
+        "cantidad": 10
+      }
+    ],
+    "estado": "pendiente",
+    "total": 25000
+  }
+]

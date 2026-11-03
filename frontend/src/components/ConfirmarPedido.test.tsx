@@ -15,7 +15,12 @@ const mocks = vi.hoisted(() => ({
 }))
 
 vi.mock('../context/CarritoContext', () => ({
-  useCarrito: () => ({ items: mocks.items, vaciarCarrito: mocks.vaciarCarrito }),
+  useCarrito: () => ({ 
+    items: mocks.items,
+    subtotal: mocks.items.reduce((total, item) => total + item.producto.precio * item.cantidad,
+    0,
+  ),
+    vaciarCarrito: mocks.vaciarCarrito }),
 }))
 
 vi.mock('../services/pedidos', () => ({
