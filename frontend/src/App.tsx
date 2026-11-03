@@ -5,6 +5,7 @@ import type { Menu } from './api/contratos'
 import { obtenerMesaDeUrl } from './utils/mesa'
 import { SelectorCafe } from './components/SelectorCafe' 
 import { Carrito } from './components/Carrito'
+import { ConfirmarPedido } from './components/ConfirmarPedido'
 import { Pasteleria } from './components/Pasteleria'
 import { useCarrito } from './context/CarritoContext'
 
@@ -151,6 +152,7 @@ const manejarAgregarAlCarrito = (seleccion: {
       {estado.estado === 'exito' && (
         <Pasteleria productos={estado.productos} />)} // Agregamos la sección de pastelería
           <Carrito />
+      <ConfirmarPedido mesa={mesa} />
       {cafeSeleccionado && (
         <div style={{
           position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
