@@ -154,4 +154,26 @@ describe('Integración del pedido', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent(/respuesta incompleta/i)
     expect(screen.getByText(/items en carrito: 1/i)).toBeInTheDocument()
   })
+
+  it('actualiza el estado con GET /pedidos/:id sin recargar', async () => {
+    const usuario = userEvent.setup()
+    server.use(
+      http.post('*/pedidos', () =>
+        HttpResponse.json(
+          { id: 'pedido-1', mesaId: 4, estado: 'pendiente', total: 2500, items: [] },
+          { status: 201 },
+        ),
+      ),
+      http.get('*/pedidos/pedido-1', () =>
+        HttpResponse.json({ id: 'pedido-1', mesaId: 4, estado: 'en_preparacion', total: 2500 }),
+      ),
+    )
+
+    renderizar(4)
+    await usuario.click(screen.getByRole('button', { name: /agregar muffin/i }))
+    await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
+    await usuario.click(screen.getByRole('button', { name: /actualizar estado/i }))
+
+    expect(await screen.findByText(/estado:\s*en preparación/i)).toBeInTheDocument()
+  })
 })
