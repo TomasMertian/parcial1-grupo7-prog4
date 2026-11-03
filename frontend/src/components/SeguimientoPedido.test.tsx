@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { ZodError } from 'zod'
 import { SeguimientoPedido } from './SeguimientoPedido'
 
 const { obtenerPedidoPorId } = vi.hoisted(() => ({ obtenerPedidoPorId: vi.fn() }))
@@ -53,6 +54,17 @@ describe('SeguimientoPedido', () => {
     await usuario.click(screen.getByRole('button', { name: /actualizar estado/i }))
 
     expect(await screen.findByRole('alert')).toHaveTextContent(/respuesta incompleta/i)
+    expect(screen.getByText(/estado:\s*pendiente/i)).toBeInTheDocument()
+  })
+
+  it('muestra un mensaje legible si el seguimiento devuelve un contrato inválido', async () => {
+    const usuario = userEvent.setup()
+    obtenerPedidoPorId.mockRejectedValue(new ZodError([]))
+
+    render(<SeguimientoPedido pedido={pedido} />)
+    await usuario.click(screen.getByRole('button', { name: /actualizar estado/i }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/formato inesperado/i)
     expect(screen.getByText(/estado:\s*pendiente/i)).toBeInTheDocument()
   })
 })

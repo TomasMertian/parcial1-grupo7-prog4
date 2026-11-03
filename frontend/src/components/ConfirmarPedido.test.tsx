@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { ZodError } from 'zod'
 import { ConfirmarPedido } from './ConfirmarPedido'
 
 const mocks = vi.hoisted(() => ({
@@ -116,6 +117,18 @@ describe('ConfirmarPedido', () => {
     await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
 
     expect(await screen.findByRole('alert')).toHaveTextContent(/respuesta incompleta/i)
+    expect(mocks.vaciarCarrito).not.toHaveBeenCalled()
+  })
+
+  it('muestra un mensaje legible si la API devuelve un contrato inválido', async () => {
+    const usuario = userEvent.setup()
+    mocks.items = [muffin]
+    mocks.crearPedido.mockRejectedValue(new ZodError([]))
+
+    render(<ConfirmarPedido mesa={4} />)
+    await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/formato inesperado/i)
     expect(mocks.vaciarCarrito).not.toHaveBeenCalled()
   })
 })
