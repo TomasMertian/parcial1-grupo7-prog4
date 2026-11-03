@@ -5,4 +5,6 @@ import { resolve } from 'path';
 // los .json a dist/. De este modo funcionan tanto en desarrollo como compilados.
 export const DATA_DIR = resolve(process.cwd(), 'src', 'data');
 export const PRODUCTOS_FILE = resolve(DATA_DIR, 'productos.json');
-export const PEDIDOS_FILE = resolve(DATA_DIR, 'pedidos.json');
+export const PEDIDOS_FILE = process.env.PEDIDOS_FILE
+  ? resolve(process.cwd(), process.env.PEDIDOS_FILE)
+  : resolve(DATA_DIR, 'pedidos.json');
