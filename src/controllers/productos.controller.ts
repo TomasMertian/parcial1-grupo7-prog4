@@ -1,11 +1,8 @@
 import { Request,Response } from "express";
 import { productoService } from "../services/producto.service";
 export class productoController {
-    private service: productoService;
-
-    constructor(){
+    constructor(private readonly service: productoService){
         //instanciamos el servicio para usarlo
-        this.service = new productoService();
     }
     
     //endpoint GET /productos

@@ -9,7 +9,6 @@ import { ConfirmarPedido } from './components/ConfirmarPedido'
 import { Pasteleria } from './components/Pasteleria'
 import { useCarrito } from './context/CarritoContext'
 
-import './App.css'
 
 type EstadoProductos =
   | { estado: 'cargando' }
