@@ -4,7 +4,6 @@ import { obtenerProductos } from './services/productos'
 import type { Menu } from './api/contratos' 
 import { obtenerMesaDeUrl } from './utils/mesa'
 import { SelectorCafe } from './components/SelectorCafe' 
-import './App.css'
 
 type EstadoProductos =
   | { estado: 'cargando' }
