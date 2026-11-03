@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { crearCuerpoPedido } from './pedido'
+import { crearCuerpoPedido, etiquetaEstado } from './pedido'
 
 const muffin = {
   producto: { id: 'pas-muffin', nombre: 'Muffin de chocolate', precio: 2500, tipo: 'pasteleria' },
@@ -18,5 +18,14 @@ describe('crearCuerpoPedido', () => {
     const cuerpo = crearCuerpoPedido([muffin], null)
     expect(cuerpo).toEqual({ items: [{ productoId: 'pas-muffin', cantidad: 2 }] })
     expect(cuerpo).not.toHaveProperty('mesaId')
+  })
+})
+
+describe('etiquetaEstado', () => {
+  it('traduce los cuatro estados del pedido', () => {
+    expect(etiquetaEstado('pendiente')).toBe('Pendiente')
+    expect(etiquetaEstado('en_preparacion')).toBe('En preparación')
+    expect(etiquetaEstado('listo')).toBe('Listo')
+    expect(etiquetaEstado('entregado')).toBe('Entregado')
   })
 })
