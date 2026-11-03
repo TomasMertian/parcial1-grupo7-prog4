@@ -1,11 +1,7 @@
 import { useState } from 'react'
 import { useCarrito } from '../context/CarritoContext'
 import { crearPedido } from '../services/pedidos'
-import {
-  crearCuerpoPedido,
-  type EstadoPedido,
-  type PedidoConfirmado,
-} from '../utils/pedido'
+import { crearCuerpoPedido, type PedidoConfirmado } from '../utils/pedido'
 import { SeguimientoPedido } from './SeguimientoPedido'
 
 interface ConfirmarPedidoProps {
@@ -24,12 +20,20 @@ export function ConfirmarPedido({ mesa }: ConfirmarPedidoProps) {
 
     try {
       const respuesta = await crearPedido(crearCuerpoPedido(items, mesa))
-      const mesaId = respuesta.mesaId ?? mesa
 
+      if (
+        respuesta.id === undefined ||
+        respuesta.estado === undefined ||
+        respuesta.total === undefined
+      ) {
+        throw new Error('La API devolvió una respuesta incompleta')
+      }
+
+      const mesaId = respuesta.mesaId ?? mesa
       const pedidoConfirmado: PedidoConfirmado = {
-        id: respuesta.id as string,
-        estado: respuesta.estado as EstadoPedido,
-        total: respuesta.total as number,
+        id: respuesta.id,
+        estado: respuesta.estado,
+        total: respuesta.total,
         ...(mesaId !== null ? { mesaId } : {}),
       }
 
