@@ -3,7 +3,6 @@ import { describe, it, expect } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { server } from '../mocks/server';
 import { Menu } from './Menu';
-import React from 'react';
 
 describe('Componente Menu', () => {
     it('debe mostrar el indicador de carga al iniciar', () => {

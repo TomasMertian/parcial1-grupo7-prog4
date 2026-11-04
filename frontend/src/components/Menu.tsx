@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { obtenerProductos } from '../services/productos';
 import type { Menu as MenuType } from '../api/contratos';
     type EstadoMenu =

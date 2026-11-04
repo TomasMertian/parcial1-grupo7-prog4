@@ -1,7 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { SelectorCafe } from './SelectorCafe.tsx';
-import React from 'react';
 
     describe('Componente SelectorCafe (3 pasos)', () => {
     it('debe permitir seleccionar variedad, tamaño y confirmar la cantidad', () => {
