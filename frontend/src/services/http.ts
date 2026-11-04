@@ -1,4 +1,4 @@
-
+import { ErrorApiSchema } from '../api/validar'
 export async function solicitudApi<T>(
     url: string,
     opciones: RequestInit = {},
@@ -23,15 +23,11 @@ export async function solicitudApi<T>(
     }
     
     if (!respuesta.ok) {
-        const error =
-        typeof datos === 'object' &&
-        datos !== null &&
-        'error' in datos &&
-        typeof datos.error === 'string'
-        ? datos.error
-        : mensajeError
-        
-        throw new Error(error)
+        const resultado = ErrorApiSchema.safeParse(datos)
+    
+        throw new Error(
+            resultado.success ? resultado.data.error : mensajeError,
+        )
     }
     
     return datos as T

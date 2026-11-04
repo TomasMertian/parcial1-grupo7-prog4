@@ -27,15 +27,16 @@ import type { Menu as MenuType } from '../api/contratos';
     }, []);
 
     if (estado.estado === 'cargando') {
-        return <div>Cargando menú...</div>;
+        return <div role="status">Cargando menú...</div>;
     }
 
     if (estado.estado === 'error') {
         return (
-        <div>
+        <div role="alert">
             <p>{estado.mensaje}</p>
-            {/* El test busca especificamente un boton que diga "reintentar" */}
-            <button onClick={cargarMenu}>Reintentar</button>
+            <button type="button" onClick={cargarMenu}>
+                Reintentar
+            </button>
         </div>
         );
     }
