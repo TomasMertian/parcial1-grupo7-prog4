@@ -76,6 +76,26 @@ parcial1-grupo7-prog4/
 
 Me encargué de la adaptación de la API para cumplir con los requerimientos del trabajo práctico 3, incluyendo los ajustes necesarios en los endpoints, el manejo de respuestas y errores, y la incorporación de los endpoints de prueba para facilitar la ejecución de las pruebas de integración.
 
+## Integrante: Santiago De Dios
+
+Me encargue de la parte de frontend y testing del TP3:
+
+- **Validacion con Zod:** esquemas estrictos (una fuente de verdad con `z.infer`)
+  para productos, pedidos y reportes, con validacion de toda respuesta de la API
+  y del formato de error, desarrollado con ciclos TDD (`ROJO` / `VERDE`).
+- **Tests de integracion con MSW 2:** junto a los tests del grupo, complete casos
+  de respuesta invalida y de mantenimiento del carrito ante errores.
+- **Estilos con SASS y Bootstrap:** base con paleta de cafeteria en variables,
+  Bootstrap configurado antes del import, layout de la pantalla principal con
+  cards, grilla responsive y barra inferior de confirmacion con subtotal.
+- **Adaptacion mobile:** una columna a 375 px, targets tactiles de 44 px y sin
+  scroll horizontal (verificado en el E2E).
+- **Accesibilidad:** idioma y titulo del documento, roles `status`/`alert`,
+  modal con `role="dialog"` y nombres accesibles en todos los controles.
+- **E2E con Playwright:** recorrido feliz contra API real con `reset`/`seed`,
+  override de `PEDIDOS_FILE` para no tocar los datos reales y proyecto mobile
+  con chequeo de 375 px.
+
 ## Endpoints de la API
 
 ### Productos
@@ -121,7 +141,8 @@ La respuesta de `GET /pedidos/:id` incluye el estado, los productos y sus cantid
 
 | Método | Ruta | Descripción |
 |---|---|---|
-| GET | `/reportes` | Consulta los reportes disponibles. |
+| GET | `/reportes/facturacion` | Devuelve `{ facturacionTotal }` con la suma de todos los pedidos. |
+| GET | `/reportes/mas-vendido` | Devuelve `{ productoId, nombre, cantidad }` o `null` si no hay ventas. |
 
 ### Endpoints de prueba
 
@@ -143,4 +164,135 @@ Ejemplo:
     {
       "error": "Producto no encontrado"
     }
+
+## Como levantar la API y el front
+
+El front necesita la API corriendo: Vite hace proxy de `/productos`, `/pedidos` y
+`/reportes` a `http://localhost:3000`.
+
+Terminal 1 (raiz del repo, API):
+
+```bash
+pnpm install
+pnpm dev
+```
+
+API en `http://localhost:3000` (health check: `GET /health`).
+
+Terminal 2 (front):
+
+```bash
+cd frontend
+pnpm install
+pnpm dev
+```
+
+Front en `http://localhost:5173`.
+
+Para entrar como mesa: `http://localhost:5173/?mesa=4`.
+Sin `?mesa`, o con un valor invalido (texto, cero, negativo), el pedido es para
+retirar en barra.
+
+## Como correr cada nivel de tests
+
+Backend (raiz):
+
+```bash
+pnpm test               # todos los tests
+pnpm test:unit          # solo unitarios (tests/unit)
+pnpm test:integration   # solo integracion (tests/integration)
+```
+
+Frontend (`cd frontend`):
+
+```bash
+pnpm test               # unitarios de componentes/utilidades + integracion con MSW
+```
+
+E2E con Playwright (`cd frontend`):
+
+```bash
+pnpm exec playwright install chromium   # una sola vez
+pnpm test:e2e
+```
+
+Notas del E2E:
+
+- `playwright.config.ts` levanta la API con `NODE_ENV=test` y
+  `PEDIDOS_FILE=.e2e-pedidos.json`, y el front con Vite en 5173.
+- Antes de cada test se llaman `POST /__test__/reset` y `POST /__test__/seed`
+  para dejar los pedidos en un estado conocido.
+- Conviene cerrar el `pnpm dev` de la API antes de correr E2E, para que
+  Playwright use su propia instancia y no se escriba en `src/data/pedidos.json`.
+- El proyecto `mobile` corre con viewport 375x812 y verifica que
+  `document.documentElement.scrollWidth <= 375` (sin scroll horizontal).
+
+## Contrato de la API que usa el front
+
+Ejemplo de producto (`GET /productos`):
+
+```json
+{
+  "id": "exp-poc-col",
+  "tipo": "expreso",
+  "nombre": "Cafe expreso Pocillo Colombia",
+  "precioBase": 2500,
+  "precio": 5840,
+  "variedad": "Colombia",
+  "tamano": "Pocillo"
+}
+```
+
+Ejemplo de pedido (`POST /pedidos`, respuesta 201):
+
+```json
+{
+  "id": "3f1c...",
+  "mesaId": 4,
+  "items": [{ "productoId": "exp-poc-col", "cantidad": 1 }],
+  "estado": "pendiente",
+  "total": 5840
+}
+```
+
+Cuerpo que envia el front en `POST /pedidos`:
+
+```json
+{
+  "mesaId": 4,
+  "items": [{ "productoId": "exp-poc-col", "cantidad": 1 }]
+}
+```
+
+`mesaId` es opcional: si falta, el pedido es para retirar en barra.
+
+### Validacion de respuestas con Zod
+
+Los esquemas viven en `frontend/src/api/contratos.ts` y `frontend/src/api/validar.ts`.
+Cada tipo se deriva del esquema con `z.infer` (una sola fuente de verdad) y toda
+respuesta se valida antes de usarse. Si no cumple el contrato, el front lanza:
+
+```
+La respuesta de la API no cumple el contrato
+```
+
+## Trabajo del TP3
+
+- **Contratos Zod**: esquemas estrictos para productos, pedidos y reportes;
+  `validarContrato` unifica el error de contrato; el error de la API se valida
+  con `ErrorApiSchema`; `mas-vendido` acepta `null`.
+- **Tests de integracion con MSW 2**: carga del menu, pedido completo verificando
+  el cuerpo del `POST`, 4xx que conserva el carrito, 500 con reintento, API caida
+  y respuesta que no cumple el contrato.
+- **Estilos con SASS y Bootstrap**: paleta de cafeteria en `_variables.scss`,
+  Bootstrap configurado antes del import, layout con `container`, cards y
+  `list-group`.
+- **Mobile 375 px**: una columna por debajo de 768 px, barra inferior con subtotal
+  y boton de confirmar, sin scroll horizontal.
+- **Accesibilidad**: `lang="es"`, titulo de pagina, `role="status"` para carga,
+  `role="alert"` para errores, modal con `role="dialog"` y `aria-modal`, botones
+  con nombre accesible.
+- **E2E con Playwright**: recorrido feliz (mesa, cafe, pasteleria, confirmacion) y
+  chequeo de 375 px.
+- **TDD**: commits `ROJO` (test que falla) y `VERDE` (implementacion) por rama.
 
