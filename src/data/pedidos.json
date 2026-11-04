@@ -46,5 +46,16 @@
     ],
     "estado": "pendiente",
     "total": 25000
+  },
+  {
+    "id": "f87143dd-61e7-459f-94ca-64cf07466e00",
+    "items": [
+      {
+        "productoId": "exp-poc-bra",
+        "cantidad": 1
+      }
+    ],
+    "estado": "pendiente",
+    "total": 5020
   }
 ]
