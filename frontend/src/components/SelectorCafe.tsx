@@ -59,17 +59,26 @@
             <h3>Paso 3: Confirmar</h3>
             <p>Resumen: Café {variedad} ({tamano})</p>
             <p>Precio total: ${precioBase * cantidad}</p>
-            <div className="control-cantidad">
-                <label htmlFor="cantidad">Cantidad:</label>
-                <button 
+            <div className="control-cantidad d-flex align-items-center gap-2">
+                <span className="mb-0">Cantidad:</span>
+                <button
                 type="button"
+                className="btn btn-sm btn-outline-secondary"
+                aria-label="Restar cantidad"
                 onClick={() => setCantidad((prev) => Math.max(1, prev - 1))}
                 disabled={cantidad <= 1}
                 >
                 -
                 </button>
-                <span>{cantidad}</span>
-                <button type="button" onClick={() => setCantidad((prev) => prev + 1)}>+</button>
+                <span id="cantidad" aria-live="polite">{cantidad}</span>
+                <button
+                type="button"
+                className="btn btn-sm btn-outline-secondary"
+                aria-label="Sumar cantidad"
+                onClick={() => setCantidad((prev) => prev + 1)}
+                >
+                +
+                </button>
             </div>
             <button onClick={manejarAgregar}>Agregar al pedido</button>
             <div>
