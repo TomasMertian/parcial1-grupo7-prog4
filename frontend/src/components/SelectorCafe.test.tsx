@@ -5,8 +5,21 @@ import { SelectorCafe } from './SelectorCafe.tsx';
     describe('Componente SelectorCafe (3 pasos)', () => {
     it('debe permitir seleccionar variedad, tamaño y confirmar la cantidad', () => {
         const onAgregarMock = vi.fn();
+        const onCancelarMock = vi.fn();
 
-        render(<SelectorCafe precioBase={2500} onAgregar={onAgregarMock} />);
+        render(
+        <SelectorCafe 
+        nombre="Expreso"
+        descripcion="Café fuerte e intenso"
+        precioBase={2500} 
+        onAgregar={onAgregarMock} 
+        onCancelar={onCancelarMock}
+        />
+    );
+
+    // Verificamos que se muestre la info de la bebida
+    expect(screen.getByText(/bebida: expreso/i)).toBeInTheDocument();
+    expect(screen.getByText(/descripción: café fuerte e intenso/i)).toBeInTheDocument();
 
         // paso 1
         expect(screen.getByText(/paso 1: elige la variedad/i)).toBeInTheDocument();
