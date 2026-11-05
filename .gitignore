@@ -20,3 +20,6 @@ pnpm-debug.log*
 # Sistema operativo / editores
 .DS_Store
 Thumbs.db
+
+#archivo temporal de e2e
+.e2e-pedidos.json
