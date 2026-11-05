@@ -1,7 +1,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { obtenerProductos } from './services/productos'
-import type { Menu } from './api/contratos' 
+import type { Menu, Producto } from './api/contratos' 
 import { obtenerMesaDeUrl } from './utils/mesa'
 import { SelectorCafe } from './components/SelectorCafe' 
 import { Carrito } from './components/Carrito'
@@ -24,9 +24,7 @@ export default function App() {
   const [mesa, setMesa] = useState<number | null>(null)
 
 
-  // estado para controlar si el usuario esta armando un cafe
-  const [cafeSeleccionado, setCafeSeleccionado] = useState<{ id: string; tipo: string; nombre: string; descripcion?: string; precioBase: number } | null>(null)
-
+ 
   const cargarProductos = useCallback(async () => {
   setEstado({ estado: 'cargando' })
 
@@ -51,38 +49,18 @@ export default function App() {
 
   // funcion para manejar cuando el usuario termina los 3 pasos del selector
 
-const manejarAgregarAlCarrito = (seleccion: {
-  variedad: string
-  tamano: string
-  cantidad: number
-}) => {
-  if (!cafeSeleccionado || estado.estado !== 'exito') return
+  const manejarAgregarAlCarrito = (producto: Producto, cantidad: number) => {
+    const productoCarrito = {
+      id: producto.id,
+      nombre: producto.nombre,
+      precio: producto.precio,
+      tipo: producto.tipo,
+    }
 
-  const productoElegido = estado.productos.find(
-    (producto) =>
-      producto.tipo === cafeSeleccionado.tipo &&
-      producto.tipo !== 'pasteleria' &&
-      producto.variedad === seleccion.variedad &&
-      producto.tamano === seleccion.tamano
-  )
-
-  if (!productoElegido) return
-
-  const productoCarrito = {
-    id: productoElegido.id,
-    nombre: productoElegido.nombre,
-    precio: productoElegido.precio,
-    tipo: productoElegido.tipo,
+    for (let i = 0; i < cantidad; i++) {
+      agregarProducto(productoCarrito)
+    }
   }
-
-  for (let i = 0; i < seleccion.cantidad; i++) {
-    agregarProducto(productoCarrito)
-  }
-
-  setCafeSeleccionado(null)
-}
-
-
   return (
     <div className="app-shell">
       <header className="encabezado text-center">
@@ -134,46 +112,16 @@ const manejarAgregarAlCarrito = (seleccion: {
             (estado.productos.length === 0 ? (
               <p>No hay productos disponibles.</p>
             ) : (
-              <div className="row g-3">
-                {estado.productos
-                  .filter((producto) => producto.tipo !== 'pasteleria')
-                  .map((producto) => (
-                    <div className="col-12 col-md-6 col-lg-4" key={producto.id}>
-                      <article className="card h-100 producto-card">
-                        <div className="card-body d-flex flex-column">
-                          <span className="badge text-bg-secondary align-self-start mb-2">
-                            {producto.tipo}
-                          </span>
-                          <h3 className="h6 card-title">{producto.nombre}</h3>
-                          <p className="precio mt-auto mb-2">
-                            {producto.precio.toLocaleString('es-AR', {
-                              style: 'currency',
-                              currency: 'ARS',
-                              maximumFractionDigits: 0,
-                            })}
-                          </p>
-                          <button
-                            type="button"
-                            className="btn btn-primary"
-                            aria-label={`Elegir opciones de ${producto.nombre}`}
-                            onClick={() =>
-                              setCafeSeleccionado({
-                                id: String(producto.id),
-                                tipo: producto.tipo,
-                                nombre: producto.nombre,
-                                descripcion: (producto as any).descripcion,
-                                precioBase: producto.precioBase ?? producto.precio,
-                              })
-                            }
-                          >
-                            Elegir opciones
-                          </button>
-                        </div>
-                      </article>
-                    </div>
-                  ))}
+              <div className="card producto-card">
+                <div className="card-body">
+                  <h3 className="h5 card-title">Café en tres pasos</h3>
+                  <SelectorCafe
+                    productos={estado.productos}
+                    onAgregar={manejarAgregarAlCarrito}
+                  />
+                </div>
               </div>
-            ))}
+    ))}
         </section>
 
         {estado.estado === 'exito' && (
@@ -184,43 +132,6 @@ const manejarAgregarAlCarrito = (seleccion: {
         <ConfirmarPedido mesa={mesa} />
       </main>
 
-      {cafeSeleccionado && (
-        <>
-          <div className="modal-backdrop fade show" />
-          <div
-            className="modal d-block"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="titulo-selector"
-            tabIndex={-1}
-          >
-            <div className="modal-dialog modal-dialog-centered">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h2 className="modal-title h5" id="titulo-selector">
-                    Personalizando: {cafeSeleccionado.nombre}
-                  </h2>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    aria-label="Cerrar"
-                    onClick={() => setCafeSeleccionado(null)}
-                  />
-                </div>
-                <div className="modal-body">
-                  <SelectorCafe
-                    nombre={cafeSeleccionado.nombre}
-                    descripcion={cafeSeleccionado.descripcion}
-                    precioBase={cafeSeleccionado.precioBase}
-                    onAgregar={manejarAgregarAlCarrito}
-                    onCancelar={() => setCafeSeleccionado(null)}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
     </div>
   )
 }
