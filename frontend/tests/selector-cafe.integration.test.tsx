@@ -114,7 +114,7 @@ describe('Integracion: selector de cafe', () => {
     renderizarApp()
 
     expect(await screen.findByRole('alert')).toHaveTextContent(
-      'No se pudo cargar el menu',
+      'No se pudo cargar el menú',
     )
 
     await usuario.click(
@@ -122,7 +122,7 @@ describe('Integracion: selector de cafe', () => {
     )
 
     expect(
-      await screen.findByRole('heading', { name: /café en tres pasos/i }),
+        await screen.findByText(/muffin de chocolate/i),
     ).toBeInTheDocument()
   })
 })
