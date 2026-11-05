@@ -6,7 +6,7 @@ import { describe, it, expect } from 'vitest';
 import { CafeExpreso } from '../../src/models/CafeExpreso';
 
 describe('CafeExpreso', () => {
-it.each([
+it.each([ //ejecuta la misma prueba para diferentes datos
     ['Pocillo', 'Brasil', 5020],
     ['Pocillo', 'Colombia', 5740],
     ['Pocillo', 'Etiopia', 6820],
@@ -18,10 +18,10 @@ it.each([
     ['Taza grande', 'Etiopia', 11140],
     ] as const)(
     'calcula el precio de %s con café %s',
-    (tamano, variedad, precioEsperado) => {
-    const cafe = new CafeExpreso('E1', variedad, tamano);
+    (tamano, variedad, precioEsperado) => {//recibe el tamano, la variedad y el precio esperado.
+    const cafe = new CafeExpreso('E1', variedad, tamano);//crea un cafe con el identificador E1, la variedad y el tamaño.
 
-    expect(cafe.calcularPrecio()).toBe(precioEsperado);
+    expect(cafe.calcularPrecio()).toBe(precioEsperado);//compara el precio calculado con el precio esperado.
     },);
 });
 

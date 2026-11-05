@@ -83,7 +83,7 @@ describe('Servicio de pedidos', () => {
 
 
     it('obtiene la lista de pedidos', async () => {
-        const pedidos = [{ id: 'pedido-1', estado: 'pendiente', total: 10040 }]
+        const pedidos = [{ id: 'pedido-1', estado: 'pendiente', total: 10040,items: [] }]
         vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
             new Response(JSON.stringify(pedidos), { status: 200 }),
         ))
