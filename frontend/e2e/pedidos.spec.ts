@@ -11,17 +11,18 @@ test('recorrido feliz: mesa, café, pastelería y confirmación', async ({ page 
   await page.goto('/?mesa=4')
 
   await expect(page.getByText('Pedido para la Mesa 4')).toBeVisible()
+  await expect(
+    page.getByRole('heading', { name: 'Café en tres pasos' }),
+  ).toBeVisible()
 
-  await page
-    .getByRole('button', { name: /elegir opciones de café expreso pocillo colombia/i })
-    .click()
+  await page.getByRole('radio', { name: 'Expreso' }).check()
+  await page.getByRole('radio', { name: 'Mediano' }).check()
+  await page.getByRole('radio', { name: /colombia/i }).check()
 
-  const dialogo = page.getByRole('dialog')
-  await expect(dialogo).toBeVisible()
-  await dialogo.getByRole('button', { name: 'Colombia' }).click()
-  await dialogo.getByRole('button', { name: 'Pocillo' }).click()
-  await dialogo.getByRole('button', { name: /agregar al pedido/i }).click()
-  await expect(dialogo).toBeHidden()
+  await page.getByRole('button', { name: /agregar al pedido/i }).click()
+  await expect(
+    page.getByText(/café expreso mediano colombia/i),
+  ).toBeVisible()
 
   await page
     .getByRole('button', { name: /agregar al carrito: muffin de chocolate/i })
@@ -37,7 +38,9 @@ test('a 375 px no hay scroll horizontal', async ({ page }, info) => {
   test.skip(info.project.name !== 'mobile', 'solo corre en el proyecto mobile')
 
   await page.goto('/?mesa=4')
-  await expect(page.getByRole('heading', { name: 'Café Origen' })).toBeVisible()
+  await expect(
+    page.getByRole('heading', { name: 'Café Origen' }),
+  ).toBeVisible()
 
   const ancho = await page.evaluate(() => document.documentElement.scrollWidth)
   expect(ancho).toBeLessThanOrEqual(375)

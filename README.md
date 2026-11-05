@@ -91,7 +91,8 @@ Me encargue de la parte de frontend y testing del TP3:
 - **Adaptacion mobile:** una columna a 375 px, targets tactiles de 44 px y sin
   scroll horizontal (verificado en el E2E).
 - **Accesibilidad:** idioma y titulo del documento, roles `status`/`alert`,
-  modal con `role="dialog"` y nombres accesibles en todos los controles.
+  selector de cafe en tres pasos con radios accesibles, descripcion y precio
+  por origen, y nombres accesibles en todos los controles.
 - **E2E con Playwright:** recorrido feliz contra API real con `reset`/`seed`,
   override de `PEDIDOS_FILE` para no tocar los datos reales y proyecto mobile
   con chequeo de 375 px.
@@ -290,8 +291,8 @@ La respuesta de la API no cumple el contrato
 - **Mobile 375 px**: una columna por debajo de 768 px, barra inferior con subtotal
   y boton de confirmar, sin scroll horizontal.
 - **Accesibilidad**: `lang="es"`, titulo de pagina, `role="status"` para carga,
-  `role="alert"` para errores, modal con `role="dialog"` y `aria-modal`, botones
-  con nombre accesible.
+  `role="alert"` para errores, selector de cafe en tres pasos con radios
+  accesibles y boton con nombre accesible.
 - **E2E con Playwright**: recorrido feliz (mesa, cafe, pasteleria, confirmacion) y
   chequeo de 375 px.
 - **TDD**: commits `ROJO` (test que falla) y `VERDE` (implementacion) por rama.
