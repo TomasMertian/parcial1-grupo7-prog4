@@ -80,3 +80,17 @@ Las tareas desarrolladas fueron:
 - Documentación de los endpoints de la API y de la estructura del frontend.
 
 Los servicios del frontend se encuentran en `src/services/` y las pruebas automatizadas en `tests/services.test.js`.
+
+### Integrante: Renata Turani 
+
+Mi tarea estuvo enfocada en el desarrollo de la interfaz de usuario para el escaneo de mesas, la visualización dinámica del menú consumido desde la API y la creación del flujo interactivo para la personalización de bebidas.
+
+Las tareas desarrolladas fueron:
+
+- **Lectura dinámica de mesa (`obtenerMesaDeUrl`):** Implementación de la lógica para capturar y validar el número de mesa a partir de los parámetros de la URL (`?mesa=X`), gestionando los estados visuales en la cabecera ("Retiro en barra" vs "Pedido para la Mesa X").
+- **Carga y visualización del Menú:** Consumo del endpoint de productos integrando validaciones estrictas con Zod. Se manejó la unión discriminada de estados de la UI (`cargando`, `error` y `exito`) mostrando alertas o la grilla de productos según correspondiera.
+- **Selector de Café Interactivo (`SelectorCafe.tsx`):** Desarrollo mediante metodología TDD (Rojo/Verde) de un componente modal en 3 pasos para la personalización de bebidas expreso y filtradas:
+  - **Paso 1:** Selección de la variedad de grano (Brasil, Colombia, Etiopía).
+  - **Paso 2:** Selección de tamaño de taza (Pocillo, Mediano, Taza grande).
+  - **Paso 3:** Selector de cantidad con cálculo dinámico del precio final multiplicando el precio base. 
+- **Testing Unitario:** Desarrollo de pruebas unitarias (`SelectorCafe.test.tsx` y `Menu.test.tsx`) garantizando que el flujo de los 3 pasos, los cálculos y los estados de error de la API funcionen correctamente.

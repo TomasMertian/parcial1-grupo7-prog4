@@ -297,3 +297,13 @@ La respuesta de la API no cumple el contrato
   chequeo de 375 px.
 - **TDD**: commits `ROJO` (test que falla) y `VERDE` (implementacion) por rama.
 
+## Integrante: Renata Turani 
+
+Me encargué de la lógica de negocio y modelado del **Café Filtrado**, así como del flujo completo (rutas, controladores y servicios) para la **Consulta de Pedidos** en la API.
+
+- **Modelo de Café Filtrado (`CafeFiltrado.ts`):** Implementación del cálculo dinámico del precio final utilizando la fórmula `3200 + gramos(tamaño) × precioPorGramo(variedad)`. Se configuraron las equivalencias exactas de gramos por tamaño (Pocillo: 6g, Mediano: 15g, Taza grande: 25g) y precio por gramo según el origen (Brasil: $140, Colombia: $180, Etiopía: $240).
+- **Consulta de Pedidos:** Desarrollo de la capa de servicios (`pedidosConsulta.service.ts`) y controladores (`pedidosConsulta.controller.ts`) para listar todos los pedidos guardados y buscar pedidos específicos por su ID, manejando correctamente los estados de respuesta.
+- **Nuevos Endpoints:** Creación de `pedidosConsulta.routes.ts` y su respectivo montaje en `app.ts` para habilitar las rutas `GET /pedidos` (lista completa de todas las mesas) y `GET /pedidos/:id` (devolviendo 200 si existe o 404 si no se encuentra).
+- **Testing y Calidad (Unit & Integration):** 
+  - *Unitarios:* Desarrollo de pruebas para validar los 9 precios finales posibles de la tabla de filtrados, y verificación de los métodos de listar y buscar pedidos utilizando datos de prueba.
+  - *Integración:* Pruebas para garantizar que `GET /productos` retorne el precio calculado correcto para los cafés filtrados, y validación de los códigos de estado (200 y 404) en los endpoints de pedidos.
