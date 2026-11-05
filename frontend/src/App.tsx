@@ -25,7 +25,7 @@ export default function App() {
 
 
   // estado para controlar si el usuario esta armando un cafe
-  const [cafeSeleccionado, setCafeSeleccionado] = useState<{ id : string, nombre: string, precio: number, tipo: string } | null>(null)
+  const [cafeSeleccionado, setCafeSeleccionado] = useState<{ id: string; tipo: string; nombre: string; descripcion?: string; precioBase: number } | null>(null)
 
   const cargarProductos = useCallback(async () => {
   setEstado({ estado: 'cargando' })
@@ -159,9 +159,10 @@ const manejarAgregarAlCarrito = (seleccion: {
                             onClick={() =>
                               setCafeSeleccionado({
                                 id: String(producto.id),
-                                nombre: producto.nombre,
-                                precio: producto.precio,
                                 tipo: producto.tipo,
+                                nombre: producto.nombre,
+                                descripcion: (producto as any).descripcion,
+                                precioBase: producto.precioBase ?? producto.precio,
                               })
                             }
                           >
@@ -208,8 +209,11 @@ const manejarAgregarAlCarrito = (seleccion: {
                 </div>
                 <div className="modal-body">
                   <SelectorCafe
-                    precioBase={cafeSeleccionado.precio}
+                    nombre={cafeSeleccionado.nombre}
+                    descripcion={cafeSeleccionado.descripcion}
+                    precioBase={cafeSeleccionado.precioBase}
                     onAgregar={manejarAgregarAlCarrito}
+                    onCancelar={() => setCafeSeleccionado(null)}
                   />
                 </div>
               </div>
