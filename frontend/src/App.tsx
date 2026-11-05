@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { obtenerProductos } from './services/productos'
 import type { Menu } from './api/contratos' 
 import { obtenerMesaDeUrl } from './utils/mesa'
@@ -27,20 +27,27 @@ export default function App() {
   // estado para controlar si el usuario esta armando un cafe
   const [cafeSeleccionado, setCafeSeleccionado] = useState<{ id : string, nombre: string, precio: number, tipo: string } | null>(null)
 
-  useEffect(() => {
-    const numeroMesa = obtenerMesaDeUrl(window.location.search)
-    setMesa(numeroMesa)
-    obtenerProductos()
-      .then((productos) => {
-        setEstado({ estado: 'exito', productos })
-      })
-      .catch(() => {
-        setEstado({
-          estado: 'error',
-          mensaje: 'No se pudieron cargar los productos.',
-        })
-      })
+  const cargarProductos = useCallback(async () => {
+  setEstado({ estado: 'cargando' })
+
+  try {
+    const productos = await obtenerProductos()
+    setEstado({ estado: 'exito', productos })
+  } catch (causa) {
+    setEstado({
+      estado: 'error',
+      mensaje:
+        causa instanceof Error
+          ? causa.message
+          : 'No se pudieron cargar los productos.',
+    })
+  }
   }, [])
+
+  useEffect(() => {
+    setMesa(obtenerMesaDeUrl(window.location.search))
+    void cargarProductos()
+  }, [cargarProductos])
 
   // funcion para manejar cuando el usuario termina los 3 pasos del selector
 
@@ -111,9 +118,16 @@ const manejarAgregarAlCarrito = (seleccion: {
           )}
 
           {estado.estado === 'error' && (
-            <p className="alert alert-danger" role="alert">
-              {estado.mensaje}
-            </p>
+            <div className="alert alert-danger" role="alert">
+              <p className="mb-2">{estado.mensaje}</p>
+              <button
+                type="button"
+                className="btn btn-sm btn-outline-danger"
+                onClick={() => void cargarProductos()}
+              >
+                Reintentar
+              </button>
+            </div>
           )}
 
           {estado.estado === 'exito' &&
