@@ -322,3 +322,14 @@ Me encargué de la lógica de negocio y modelado del **Café Filtrado**, así co
 - **Testing y Calidad (Unit & Integration):** 
   - *Unitarios:* Desarrollo de pruebas para validar los 9 precios finales posibles de la tabla de filtrados, y verificación de los métodos de listar y buscar pedidos utilizando datos de prueba.
   - *Integración:* Pruebas para garantizar que `GET /productos` retorne el precio calculado correcto para los cafés filtrados, y validación de los códigos de estado (200 y 404) en los endpoints de pedidos.
+
+## Integrante: Tomás Mertian
+
+Me encargué de la implementación inicial del módulo de pedidos en la API: modelo, servicio, controlador, ruta `POST /pedidos` y sus pruebas unitarias y de integración.
+
+- **Modelo de Pedido (`Pedido.ts`):** Definición de la interfaz `Pedido`, con `id`, `mesa`, `items`, `estado` y `total`.
+- **Servicio de Pedidos (`pedidos.service.ts`):** Implementación de `PedidosService`, con el cálculo del total a partir de los precios de los productos y la creación del pedido en estado `pendiente`.
+- **Controlador (`pedidos.controller.ts`):** Validación del cuerpo con Zod y respuesta `201` con el pedido creado; los datos inválidos y los productos inexistentes devuelven `400` con `{ error }`.
+- **Ruta (`pedidos.routes.ts`):** Registro de `POST /pedidos` y conexión del controlador con los repositorios de pedidos y productos.
+- **Testing y Calidad:** Pruebas unitarias del servicio y de integración de `POST /pedidos`, incluyendo el cálculo del total y los casos de error.
+- **TP3 — parte frontend:** la confirmación, el envío a la API, la información del pedido, el seguimiento y el manejo de errores están documentados en `frontend/README.md`.
