@@ -113,7 +113,7 @@ que Playwright use su propia instancia.
 
 ## División de responsabilidades
 
-### Integrante 1: Federica Vignales Rocca
+### Integrante: Federica Vignales Rocca
 
 Mi tarea estuvo enfocada en la adaptación del backend a los requerimientos del trabajo práctico y en la conexión del frontend con la API.
 
@@ -167,7 +167,7 @@ Me encargué de la parte de frontend y testing del TP3:
   con chequeo de 375 px.
 - **TDD:** commits `ROJO` (test que falla) y `VERDE` (implementación) por rama.
 
-## Integrante: Surop Maitena
+### Integrante: Surop Maitena
 
 - **Mi tarea estuvo enfocada en el desarrollo e integración del módulo de pastelería y carrito de compras, incluyendo la gestión del estado, las cantidades de los productos y el cálculo de subtotales.**
 
@@ -184,3 +184,17 @@ Me encargué de la parte de frontend y testing del TP3:
 `Integración con la aplicación (App.tsx y main.tsx):` Incorporación de los componentes de pastelería y carrito en la aplicación principal, junto con la configuración del proveedor del contexto (CarritoProvider) para que el estado del carrito esté disponible en los componentes correspondientes.
 
 `Testing unitario y de componentes:` Desarrollo y ejecución de pruebas automatizadas para verificar el funcionamiento de la pastelería, el carrito y su contexto, mediante los archivos `Pasteleria.test.tsx, Carrito.test.tsx y CarritoContext.test.tsx.` También se realizaron pruebas para comprobar el comportamiento de las acciones del reducer en `carritoReducer.test.ts.`
+
+### Integrante: Tomás Mertian
+
+Mi tarea estuvo enfocada en la confirmación del pedido, el envío a la API, la información del pedido, el seguimiento del estado y el manejo de errores.
+
+Las tareas desarrolladas fueron:
+
+- **Confirmación y envío (`ConfirmarPedido.tsx`):** Armado del cuerpo del pedido con `mesaId` opcional y los productos del carrito, envío mediante `POST /pedidos`, botón deshabilitado con el carrito vacío y visualización del número de pedido, mesa, estado y total devueltos por la API. El carrito se vacía solo cuando la respuesta es válida.
+- **Seguimiento del pedido (`SeguimientoPedido.tsx`):** Visualización de la información del pedido y botón `Actualizar estado`, que consulta `GET /pedidos/:id` y actualiza el estado sin recargar la página.
+- **Manejo de errores:** Mensajes visibles para rechazos de la API, errores de conexión y respuestas incompletas o con formato inesperado; el carrito y el último estado conocido se conservan.
+- **Utilidades (`utils/pedido.ts`):** Funciones `crearCuerpoPedido`, `etiquetaEstado`, `formatearPrecio` y `mensajeDeError`.
+- **Testing:** Pruebas unitarias de las utilidades, pruebas de componente con Testing Library y pruebas de integración con MSW 2 para el flujo de confirmación, los errores y el seguimiento.
+- **Integración en la aplicación (`App.tsx`):** Incorporación de `ConfirmarPedido` debajo del carrito, con la mesa obtenida de la URL.
+- **TDD:** Desarrollo con ciclos `ROJO` / `VERDE`, con commits separados para cada comportamiento.
