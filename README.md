@@ -97,6 +97,21 @@ Me encargue de la parte de frontend y testing del TP3:
   override de `PEDIDOS_FILE` para no tocar los datos reales y proyecto mobile
   con chequeo de 375 px.
 
+## Integrante: Santiago De dios PARCIAL — Productos y pastelería
+
+Me encargué del modelo de productos y pastelería, de la fábrica que crea la clase correcta según el tipo, y de la capa de servicios, controladores y rutas de `/productos`.
+
+- **Modelo de Pastelería (`Pasteleria.ts`):** Clase del producto de pastelería (muffin, selva negra) con precio fijo igual a `precioBase`.
+- **Fábrica (`fabrica.ts`):** Crea la clase correcta según el `tipo` del JSON (`expreso`, `filtrado` o `pasteleria`). Es la base que usan los demás modelos.
+- **Servicio de Productos (`productos.service.ts`):** Lista todos los productos y busca uno por id.
+- **Controlador (`productos.controller.ts`):** Atiende las peticiones HTTP de productos y arma la respuesta.
+- **Rutas (`productos.routes.ts`):** Define los endpoints de `/productos`.
+- **Endpoints:** `GET /productos` devuelve 200 con la lista de los 20 productos; `GET /productos/:id` devuelve 200 con el producto o 404 si no existe.
+- **Testing y Calidad (Unit & Integration):**
+  - *Unitarios:* el muffin cuesta 2500 y la selva negra 4200, y la fábrica crea la clase correcta según `tipo`.
+  - *Integración:* `GET /productos` devuelve 200 con 20 productos, uno existente devuelve 200 y uno inexistente devuelve 404.
+- **Dependencias:** se apoya en `Producto.ts`, `tipos.ts` y `ProductoRepository.ts`; depende de la base previa y de los modelos de Est 2 y Est 3, y habilita a Est 4 para precios y reportes.
+
 ## Endpoints de la API
 
 ### Productos
