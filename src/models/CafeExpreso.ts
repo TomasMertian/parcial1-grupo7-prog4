@@ -35,7 +35,6 @@ calcularPrecio(): number { //multiplica los gramos por el precio del gramo y sum
     };
 
     return (
-    this.precioBase +
-      gramosPorTamano[this.tamano] * precioPorGramo[this.variedad]
+    this.precioBase + gramosPorTamano[this.tamano] * precioPorGramo[this.variedad]
     )};
 }

@@ -2,7 +2,7 @@ import type { EstadoPedido, ItemPedido } from './tipos';
 
 export interface Pedido {
   id: string;
-  mesa: number;
+  mesaId?: number;
   items: ItemPedido[];
   estado: EstadoPedido;
   total: number;

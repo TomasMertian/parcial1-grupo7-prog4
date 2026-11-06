@@ -1,0 +1,139 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { ZodError } from 'zod'
+import { ConfirmarPedido } from './ConfirmarPedido'
+
+const mocks = vi.hoisted(() => ({
+  vaciarCarrito: vi.fn(),
+  crearPedido: vi.fn(),
+  obtenerPedidoPorId: vi.fn(),
+  items: [] as {
+    producto: { id: string; nombre: string; precio: number; tipo: string }
+    cantidad: number
+  }[],
+}))
+
+vi.mock('../context/CarritoContext', () => ({
+  useCarrito: () => ({ 
+    items: mocks.items,
+    subtotal: mocks.items.reduce((total, item) => total + item.producto.precio * item.cantidad,
+    0,
+  ),
+    vaciarCarrito: mocks.vaciarCarrito }),
+}))
+
+vi.mock('../services/pedidos', () => ({
+  crearPedido: mocks.crearPedido,
+  obtenerPedidoPorId: mocks.obtenerPedidoPorId,
+}))
+
+const muffin = {
+  producto: { id: 'pas-muffin', nombre: 'Muffin de chocolate', precio: 2500, tipo: 'pasteleria' },
+  cantidad: 2,
+}
+
+describe('ConfirmarPedido', () => {
+  beforeEach(() => {
+    mocks.items = []
+    mocks.vaciarCarrito.mockClear()
+    mocks.crearPedido.mockReset()
+    mocks.obtenerPedidoPorId.mockReset()
+  })
+
+  it('deshabilita el botón con el carrito vacío', () => {
+    render(<ConfirmarPedido mesa={4} />)
+    expect(screen.getByRole('button', { name: /confirmar pedido/i })).toBeDisabled()
+  })
+
+  it('envía mesa e ítems y muestra número, estado y total', async () => {
+    const usuario = userEvent.setup()
+    mocks.items = [muffin]
+    mocks.crearPedido.mockResolvedValue({
+      id: 'pedido-1',
+      mesaId: 4,
+      estado: 'pendiente',
+      total: 5000,
+      items: [],
+    })
+
+    render(<ConfirmarPedido mesa={4} />)
+    await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
+
+    expect(mocks.crearPedido).toHaveBeenCalledWith({
+      mesaId: 4,
+      items: [{ productoId: 'pas-muffin', cantidad: 2 }],
+    })
+    expect(await screen.findByText(/pedido #pedido-1/i)).toBeInTheDocument()
+    expect(screen.getByText(/estado:\s*pendiente/i)).toBeInTheDocument()
+    expect(screen.getByText(/5\.000/)).toBeInTheDocument()
+    expect(mocks.vaciarCarrito).toHaveBeenCalledTimes(1)
+  })
+
+  it('omite mesaId cuando no hay mesa', async () => {
+    const usuario = userEvent.setup()
+    mocks.items = [muffin]
+    mocks.crearPedido.mockResolvedValue({
+      id: 'pedido-1',
+      estado: 'pendiente',
+      total: 5000,
+      items: [],
+    })
+
+    render(<ConfirmarPedido mesa={null} />)
+    await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
+
+    expect(mocks.crearPedido).toHaveBeenCalledWith({
+      items: [{ productoId: 'pas-muffin', cantidad: 2 }],
+    })
+    expect(await screen.findByText(/retiro en barra/i)).toBeInTheDocument()
+  })
+
+  it('muestra el error de la API y conserva el carrito', async () => {
+    const usuario = userEvent.setup()
+    mocks.items = [muffin]
+    mocks.crearPedido.mockRejectedValue(new Error('La mesa no existe'))
+
+    render(<ConfirmarPedido mesa={4} />)
+    await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('La mesa no existe')
+    expect(mocks.vaciarCarrito).not.toHaveBeenCalled()
+  })
+
+  it('muestra el error de conexión y conserva el carrito', async () => {
+    const usuario = userEvent.setup()
+    mocks.items = [muffin]
+    mocks.crearPedido.mockRejectedValue(new Error('No se pudo conectar con la API'))
+
+    render(<ConfirmarPedido mesa={4} />)
+    await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/no se pudo conectar con la api/i)
+    expect(mocks.vaciarCarrito).not.toHaveBeenCalled()
+  })
+
+  it('rechaza una respuesta incompleta y conserva el carrito', async () => {
+    const usuario = userEvent.setup()
+    mocks.items = [muffin]
+    mocks.crearPedido.mockResolvedValue({ id: undefined, estado: undefined, total: undefined })
+
+    render(<ConfirmarPedido mesa={4} />)
+    await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/respuesta incompleta/i)
+    expect(mocks.vaciarCarrito).not.toHaveBeenCalled()
+  })
+
+  it('muestra un mensaje legible si la API devuelve un contrato inválido', async () => {
+    const usuario = userEvent.setup()
+    mocks.items = [muffin]
+    mocks.crearPedido.mockRejectedValue(new ZodError([]))
+
+    render(<ConfirmarPedido mesa={4} />)
+    await usuario.click(screen.getByRole('button', { name: /confirmar pedido/i }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(/formato inesperado/i)
+    expect(mocks.vaciarCarrito).not.toHaveBeenCalled()
+  })
+})
