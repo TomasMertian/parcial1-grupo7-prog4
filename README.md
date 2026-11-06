@@ -1,6 +1,15 @@
-# Cafetería Origen — Parcial 1 (Prog4)
+# Cafetería Origen — Parcial 1 + TP3 (Prog4)
+
+Este repositorio reúne dos entregas:
+
+- **Backend — Parcial 1:** la API de la cafetería, en la raíz del repo (`src/`, `tests/`, `package.json`, `tsconfig.json`).
+- **Frontend — TP3:** la interfaz que consume esa API, en la carpeta `frontend/`.
+
+El detalle propio del front está en [`frontend/README.md`](frontend/README.md).
 
 ## Tecnologías
+
+### Backend (Parcial 1)
 
 - Node.js 24 LTS
 - TypeScript
@@ -10,7 +19,20 @@
 - TDD para el desarrollo de los tests
 - pnpm
 
+### Frontend (TP3)
+
+- Vite
+- TypeScript
+- Zod
+- Vitest + Testing Library + MSW
+- Playwright para E2E
+- Bootstrap 5 + SASS
+- ESLint
+- pnpm
+
 ## Comandos
+
+### Backend (raíz)
 
 ```bash
 pnpm install            # instalar dependencias
@@ -24,7 +46,21 @@ pnpm test:unit          # solo tests unitarios (tests/unit)
 pnpm test:integration   # solo tests de integración (tests/integration)
 ```
 
+### Frontend (dentro de `frontend/`)
+
+```bash
+pnpm install            # instalar dependencias
+pnpm dev                # servidor de desarrollo (Vite)
+pnpm build              # compilar el front
+pnpm lint               # ejecutar ESLint
+
+pnpm test               # tests unitarios y de integración
+pnpm test:e2e           # tests E2E con Playwright
+```
+
 ## Estructura de carpetas
+
+### Raíz del repositorio (backend — Parcial 1)
 
 ```text
 parcial1-grupo7-prog4/
@@ -46,8 +82,8 @@ parcial1-grupo7-prog4/
 │   │   └── PedidoRepository.ts            base
 │   ├── services/
 │   │   ├── productos.service.ts           Est 1
-│   │   ├── pedidos.service.ts             Est 4   ← (calcularTotal + crear)
-│   │   ├── pedidosConsulta.service.ts     Est 3   ← (listar + obtener)
+│   │   ├── pedidos.service.ts             Est 4 
+│   │   ├── pedidosConsulta.service.ts     Est 3  
 │   │   └── reportes.service.ts            Est 2   
 │   ├── controllers/
 │   │   ├── productos.controller.ts        Est 1
@@ -65,10 +101,36 @@ parcial1-grupo7-prog4/
 ├── tests/
 │   ├── unit/
 │   └── integration/
+├── frontend/                              TP3 (detalle abajo)
 ├── vitest.config.ts                       base
 ├── tsconfig.json                          base
 ├── package.json                           base
 └── .gitignore
+```
+
+### Frontend — TP3 (`frontend/`)
+
+```text
+frontend/
+├── src/
+│   ├── api/                 contratos y validación con Zod
+│   ├── components/          menú, selector de café, pastelería, carrito,
+│   │                        confirmación y seguimiento
+│   ├── context/             estado global del carrito
+│   ├── services/            llamadas HTTP a la API
+│   ├── utils/               lógica de café, carrito, pedido y mesa
+│   ├── mocks/               handlers y server de MSW
+│   ├── styles/              SASS + Bootstrap
+│   ├── App.tsx
+│   └── main.tsx
+├── tests/                   tests de integración con MSW
+├── e2e/                     tests E2E con Playwright
+├── public/
+├── vite.config.ts
+├── playwright.config.ts
+├── tsconfig.json
+├── package.json
+└── README.md
 ```
 
 ## Aportes al proyecto
@@ -112,7 +174,7 @@ Me encargué del modelo de productos y pastelería, de la fábrica que crea la c
   - *Integración:* `GET /productos` devuelve 200 con 20 productos, uno existente devuelve 200 y uno inexistente devuelve 404.
 - **Dependencias:** se apoya en `Producto.ts`, `tipos.ts` y `ProductoRepository.ts`; depende de la base previa y de los modelos de Est 2 y Est 3, y habilita a Est 4 para precios y reportes.
 
-## Endpoints de la API
+## Endpoints de la API (backend — Parcial 1)
 
 ### Productos
 
