@@ -166,3 +166,21 @@ Me encargué de la parte de frontend y testing del TP3:
   override de `PEDIDOS_FILE` para no tocar los datos reales y proyecto mobile
   con chequeo de 375 px.
 - **TDD:** commits `ROJO` (test que falla) y `VERDE` (implementación) por rama.
+
+## Integrante: Surop Maitena
+
+- **Mi tarea estuvo enfocada en el desarrollo e integración del módulo de pastelería y carrito de compras, incluyendo la gestión del estado, las cantidades de los productos y el cálculo de subtotales.**
+
+*Las tareas desarrolladas fueron:*
+
+`Pastelería (Pasteleria.tsx):` Desarrollo del componente encargado de filtrar y mostrar los productos correspondientes a la categoría de pastelería, incluyendo su nombre, precio y botón para agregarlos al carrito.
+
+`Carrito de compras (Carrito.tsx):` Implementación de la interfaz para visualizar los productos agregados, sus precios unitarios, cantidades y subtotales individuales. Se incorporaron las acciones para agregar productos, restar unidades, eliminar productos y vaciar el carrito.
+
+`Gestión del estado global (CarritoContext.tsx):`  Implementación del contexto para compartir el estado del carrito entre los distintos componentes de la aplicación, centralizando las operaciones relacionadas con los productos agregados.
+
+`Lógica del carrito (carritoReducer.ts):` Desarrollo del reducer encargado de administrar las acciones del carrito, permitiendo agregar productos, incrementar o disminuir cantidades y eliminar productos. También se implementó la función para calcular el subtotal general según los productos y sus cantidades.
+
+`Integración con la aplicación (App.tsx y main.tsx):` Incorporación de los componentes de pastelería y carrito en la aplicación principal, junto con la configuración del proveedor del contexto (CarritoProvider) para que el estado del carrito esté disponible en los componentes correspondientes.
+
+`Testing unitario y de componentes:` Desarrollo y ejecución de pruebas automatizadas para verificar el funcionamiento de la pastelería, el carrito y su contexto, mediante los archivos `Pasteleria.test.tsx, Carrito.test.tsx y CarritoContext.test.tsx.` También se realizaron pruebas para comprobar el comportamiento de las acciones del reducer en `carritoReducer.test.ts.`
