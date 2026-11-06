@@ -1,0 +1,55 @@
+@import 'variables';
+@import 'bootstrap/scss/bootstrap';
+
+html { font-size: 16px; }
+
+body,
+#root {
+  min-height: 100svh;
+}
+
+// Espacio para la barra fija de confirmar en mobile
+.app-shell {
+  padding-bottom: 5.5rem;
+}
+
+// Header
+.encabezado {
+  background: $cafe-espresso;
+  color: $cafe-crema;
+  padding: 1.5rem 1rem;
+  border-radius: 0 0 $border-radius $border-radius;
+}
+
+// Productos
+.producto-card {
+  height: 100%;
+}
+.producto-card .precio {
+  font-weight: 700;
+  color: $cafe-espresso;
+}
+
+// Barra de confirmar (mobile)
+.barra-confirmar {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background: #fff;
+  border-top: 1px solid $cafe-borde;
+  padding: .75rem 1rem calc(.75rem + env(safe-area-inset-bottom));
+  display: flex;
+  gap: .75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+// Targets tactiles
+.btn,
+.form-check-input,
+.form-select {
+  min-height: 44px;
+}
+
+// Sin scroll horizontal
+img { max-width: 100%; height: auto; }

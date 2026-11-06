@@ -1,31 +1,53 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi } from 'vitest';
-import { SelectorCafe } from './SelectorCafe.tsx';
-import React from 'react';
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { describe, expect, it, vi } from 'vitest'
+import { SelectorCafe } from './SelectorCafe'
+import type { Producto } from '../api/contratos'
 
-    describe('Componente SelectorCafe (3 pasos)', () => {
-    it('debe permitir seleccionar variedad, tamaño y confirmar la cantidad', () => {
-        const onAgregarMock = vi.fn();
+const productos: Producto[] = [
+  {
+    tipo: 'expreso',
+    id: 'exp-med-col',
+    nombre: 'Café expreso Mediano Colombia',
+    precioBase: 2500,
+    precio: 7360,
+    variedad: 'Colombia',
+    tamano: 'Mediano',
+  },
+]
 
-        render(<SelectorCafe precioBase={2500} onAgregar={onAgregarMock} />);
+describe('Componente SelectorCafe', () => {
+  it('muestra los tres pasos y el botón deshabilitado', () => {
+    render(<SelectorCafe productos={productos} onAgregar={vi.fn()} />)
 
-        // paso 1
-        expect(screen.getByText(/paso 1: elige la variedad/i)).toBeInTheDocument();
-        fireEvent.click(screen.getByRole('button', { name: /colombia/i }));
+    expect(screen.getByText(/paso 1: elegí la bebida/i)).toBeInTheDocument()
+    expect(screen.getByText(/paso 2: elegí el tamaño/i)).toBeInTheDocument()
+    expect(screen.getByText(/paso 3: elegí el origen/i)).toBeInTheDocument()
 
-        // paso 2
-        expect(screen.getByText(/paso 2: elige el tamaño/i)).toBeInTheDocument();
-        fireEvent.click(screen.getByRole('button', { name: /mediano/i }));
+    expect(
+      screen.getByRole('button', { name: /agregar al pedido/i }),
+    ).toBeDisabled()
+  })
 
-        // paso 3
-        expect(screen.getByText(/paso 3: confirmar/i)).toBeInTheDocument();
-        fireEvent.click(screen.getByRole('button', { name: /agregar al pedido/i }));
+  it('agrega el producto correcto según bebida, tamaño y origen', async () => {
+    const usuario = userEvent.setup()
+    const onAgregar = vi.fn()
 
-        // verifica que se mande al carrito exactamente lo que eligio
-        expect(onAgregarMock).toHaveBeenCalledWith({
-        variedad: 'Colombia',
-        tamano: 'Mediano',
-        cantidad: 1,
-        });
-    });
-    });
+    render(<SelectorCafe productos={productos} onAgregar={onAgregar} />)
+
+    await usuario.click(screen.getByRole('radio', { name: 'Expreso' }))
+    await usuario.click(screen.getByRole('radio', { name: 'Mediano' }))
+
+    expect(
+      screen.getByText(/acidez media, cuerpo equilibrado/i),
+    ).toBeInTheDocument()
+    expect(screen.getByText(/\$\s*7\.360/)).toBeInTheDocument()
+
+    await usuario.click(screen.getByRole('radio', { name: /colombia/i }))
+    await usuario.click(
+      screen.getByRole('button', { name: /agregar al pedido/i }),
+    )
+
+    expect(onAgregar).toHaveBeenCalledWith(productos[0], 1)
+  })
+})

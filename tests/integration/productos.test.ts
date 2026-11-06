@@ -14,6 +14,8 @@ describe('Integración: endpoints de productos', () => {
 
         expect(response.status).toBe(200);
         expect(Array.isArray(response.body)).toBe(true);
+
+        expect(response.body).toHaveLength(20)
     });
 
     it('GET /productos debe devolver precio y tipo para cada producto', async () => {
